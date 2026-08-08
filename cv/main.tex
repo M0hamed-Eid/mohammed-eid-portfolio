@@ -8,7 +8,7 @@
 %  Compiles with pdfLaTeX.
 %==============================================================================
 
-\documentclass[11pt, letterpaper]{article}
+\documentclass[12pt, letterpaper]{article}
 
 % Packages:
 \usepackage[
@@ -185,7 +185,6 @@ Early-career AI/ML Engineer who builds end-to-end AI systems --- retrieval-augme
         \item Led a team of five as team lead and main developer on an AI news platform that pulls content from 7 sources, enriches it through a 5-agent pipeline, and recommends what each reader should see next.
         \item Built the recommendation engine --- pgvector similarity search, weighted scoring and MMR diversification --- and measured it with an offline NDCG@10 / MAP harness rather than guessing at quality.
         \item Designed the semantic search and RAG chat on local Sentence-Transformer embeddings, PostgreSQL/pgvector and Groq-served LLMs, with Celery and Redis running background work across three queues.
-        \item Traced duplicate task runs to an 88-minute pipeline job outliving Redis's one-hour visibility timeout; raised the timeout and moved long batch work onto its own queue so search and chat stayed responsive.
     \end{highlights}
 \end{onecolentry}
 
