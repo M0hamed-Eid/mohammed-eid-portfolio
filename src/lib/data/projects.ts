@@ -115,7 +115,6 @@ export const projects: Project[] = [
     ],
     links: {
       github: "https://github.com/M0hamed-Eid/ai-news-aggregator",
-      githubPending: true,
     },
     images: [
       {
@@ -272,7 +271,6 @@ export const projects: Project[] = [
     ],
     links: {
       github: "https://github.com/M0hamed-Eid/ayn-vqa-msa",
-      githubPending: true,
     },
     images: [
       {
