@@ -1,6 +1,6 @@
 "use client";
 
-import { Briefcase } from "lucide-react";
+import { ArrowUpRight, Briefcase } from "lucide-react";
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { experience } from "@/lib/data/experience";
@@ -35,11 +35,39 @@ export function Experience() {
                   {entry.period}
                 </span>
                 <h3 className="font-semibold mt-1">
-                  {entry.role} <span className="text-muted-foreground font-normal">· {entry.company}</span>
+                  {entry.role}{" "}
+                  <span className="text-muted-foreground font-normal">
+                    ·{" "}
+                    {entry.href ? (
+                      <a
+                        href={entry.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-0.5 hover:text-brand-pink transition-colors"
+                      >
+                        {entry.company}
+                        <ArrowUpRight className="size-3" />
+                      </a>
+                    ) : (
+                      entry.company
+                    )}
+                  </span>
                 </h3>
                 <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">
                   {entry.detail}
                 </p>
+                {entry.stack && (
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {entry.stack.map((tech) => (
+                      <span
+                        key={tech}
+                        className="rounded-full bg-white/5 border border-white/10 px-2.5 py-1 text-[0.7rem] text-muted-foreground"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </motion.div>
             ))}
           </div>

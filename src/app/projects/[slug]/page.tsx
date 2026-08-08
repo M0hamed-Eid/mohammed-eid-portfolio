@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -21,7 +21,8 @@ import { siteConfig } from "@/lib/data/site-config";
 import { cn } from "@/lib/utils";
 
 export function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.slug }));
+  // Projects with a bespoke page are served from their own route instead.
+  return projects.filter((p) => !p.href).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
@@ -36,6 +37,7 @@ export async function generateMetadata({
   return {
     title: project.title,
     description: project.summary,
+    alternates: { canonical: `${siteConfig.url}/projects/${project.slug}` },
     openGraph: {
       title: `${project.title} — ${project.subtitle}`,
       description: project.summary,
@@ -52,6 +54,8 @@ export default async function ProjectPage({
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) notFound();
+  // Keep the old URL working, but send it to the project's bespoke page.
+  if (project.href) redirect(project.href);
 
   const stages = diagrams[project.diagram];
 
@@ -241,12 +245,12 @@ export default async function ProjectPage({
             <ArrowLeft className="size-4" />
             All Projects
           </Link>
-          <a
+          <Link
             href="/#contact"
             className={cn(buttonVariants({ variant: "outline", size: "sm" }), "rounded-full")}
           >
             Let&apos;s Talk
-          </a>
+          </Link>
         </div>
       </div>
     </article>

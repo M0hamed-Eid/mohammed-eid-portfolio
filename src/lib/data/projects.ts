@@ -16,7 +16,13 @@ export interface Project {
   period: string;
   role: string;
   team?: string;
-  category: "LLM & RAG" | "NLP" | "Multimodal AI" | "Machine Learning" | "Computer Vision";
+  category:
+    | "LLM & RAG"
+    | "NLP"
+    | "Multimodal AI"
+    | "Machine Learning"
+    | "Computer Vision"
+    | "Autonomous Systems";
   status: "Live" | "In Progress" | "Completed" | "Ongoing";
   featured: boolean;
   summary: string;
@@ -33,6 +39,11 @@ export interface Project {
   };
   images: ProjectImage[];
   diagram: "ai-compass" | "palestinian-kg" | "aynvqa" | "fitness-tracker" | "adas";
+  /**
+   * Projects with a bespoke page (rather than the generic /projects/[slug]
+   * template) point at it here.
+   */
+  href?: string;
 }
 
 export const projects: Project[] = [
@@ -107,6 +118,12 @@ export const projects: Project[] = [
       githubPending: true,
     },
     images: [
+      {
+        src: "/images/projects/ai-compass/system-architecture.png",
+        alt: "AI Compass system architecture: external sources feeding a SQLAlchemy pipeline, shared PostgreSQL/pgvector and Redis infrastructure, a Django web tier, and a Next.js frontend",
+        caption:
+          "Three services over one PostgreSQL/pgvector database — the ML-heavy pipeline stays fully separate from the user-facing web tier.",
+      },
       {
         src: "/images/projects/ai-compass/logo-lockup.png",
         alt: "AI Compass logo",
@@ -347,30 +364,70 @@ export const projects: Project[] = [
   },
   {
     slug: "adas-graduation-project",
+    href: "/adas",
     title: "ADAS — Advanced Driver Assistance Systems",
-    subtitle: "Graduation Project — Computer Vision & Embedded Systems",
-    period: "2023 — Jun 2024",
-    role: "Team Lead — Software & Computer Vision",
-    team: "Graduation project team, mentored by Valeo",
-    category: "Computer Vision",
+    subtitle: "Graduation Project — a complete autonomous driving stack, built from bare metal",
+    period: "Oct 2023 — Aug 2024",
+    role: "Team Lead — Software Architecture & Computer Vision",
+    team: "Multi-team graduation project, mentored by Valeo",
+    category: "Autonomous Systems",
     status: "Completed",
     featured: true,
     summary:
-      "A driver-assistance system covering auto parking, lane keeping, automatic emergency braking, and traffic sign detection — mentored by Valeo and sponsored by ITIDA's Egypt Makes Electronics program.",
+      "A scaled research vehicle spanning five repositories and roughly 800 KB of hand-written C: an eight-sensor ultrasonic ring, sensor-fused odometry, geometric parking trajectory planning, closed-loop path tracking, autonomous emergency braking, and a Qt cockpit that maps the car's surroundings live over its own Wi-Fi access point.",
     problem:
-      "Drivers need real-time perception and control systems for safer roads — recognizing lanes, braking automatically in emergencies, detecting traffic signs, and assisting with parking — under real-world embedded hardware constraints.",
+      "Driver-assistance features are usually demonstrated in simulation, where perception is clean and compute is free. We built the same capability stack on real hardware — noisy ultrasonic echoes, a drifting IMU, a microcontroller with no operating system — writing every driver from GPIO up to the parking planner by hand.",
     architecture: [
-      "Software and computer-vision modules covering lane keeping, automatic emergency braking, traffic sign detection, auto parking, personal parking, drive-backward assist, and lane-change assist.",
-      "Led the team as both technical and project lead, owning the software/vision side while coordinating hardware integration.",
+      "Five repositories forming one system: vehicle ECU firmware, the software interface contracts between perception and control, an ESP32 telemetry bridge, a Qt/QML operator cockpit, and the computer-vision workstream.",
+      "Strictly layered bare-metal firmware on an STM32 BlackPill — LIB → MCAL → HAL → APP — with no RTOS and no vendor HAL.",
+      "A pure-header, function-pointer interface layer (IO_Modules) that I designed so the vision and embedded teams could build in parallel against a fixed contract.",
+      "Sensor-fused localisation: four selectable yaw estimators (gyro, magnetometer, fusion, arc geometry) over dead-reckoned wheel odometry.",
+      "Circle–line–circle parking trajectories parameterised by the vehicle's own geometry and true minimum turning radius, tracked closed-loop.",
+      "Telemetry over UART → ESP32 soft access point → TCP/JSON → a Qt Quick cockpit that plots a live surroundings map.",
     ],
-    techStack: ["Computer Vision", "Embedded Systems", "Python"],
+    techStack: [
+      "C",
+      "STM32",
+      "ESP32",
+      "Bare-Metal Firmware",
+      "MCAL / HAL Architecture",
+      "Sensor Fusion",
+      "Control Systems",
+      "OpenCV",
+      "Qt / QML",
+      "C++",
+      "Python",
+      "TCP / JSON",
+    ],
+    challenges: [
+      {
+        challenge:
+          "Two teams — vision and embedded — had to build in parallel against hardware that did not exist yet, in a language with no interfaces.",
+        solution:
+          "Defined the entire boundary as pure C headers of function-pointer structs before either side started, so perception and control could be developed, stubbed and tested independently and integration became a link step rather than a rewrite.",
+      },
+      {
+        challenge:
+          "Ultrasonic echoes are noisy and angle-sensitive; one bad reading can trigger a phantom emergency brake.",
+        solution:
+          "Made uncertainty part of the type system — the filter returns a reading paired with a confidence value, and sensors carry their chassis offsets and are sampled with current speed and encoder value so returns are placed correctly rather than assumed static.",
+      },
+      {
+        challenge:
+          "A gyro-only heading drifts over a long manoeuvre, while a magnetometer alone is corrupted by the car's own motors.",
+        solution:
+          "Built four selectable yaw estimators behind a single call and shipped both compass and IMU yaw in every telemetry frame, so heading sources could be compared live during a run instead of debugged afterwards.",
+      },
+    ],
     results: [
-      "Grade A+",
-      "Ranked 5th of ~60 graduation projects in the Value competition",
-      "Mentored by Valeo",
-      "Sponsored by ITIDA's Egypt Makes Electronics (EME) program",
+      "Grade A+ — ranked 5th of approximately 60 graduation projects in the Value competition",
+      "Mentored by Valeo, sponsored by ITIDA's Egypt Makes Electronics (EME) programme",
+      "Roughly 800 KB of hand-written C across five repositories, with zero vendor HAL dependencies",
+      "Six driving features shipped end to end, from ultrasonic echo through to motor and servo actuation",
     ],
-    links: {},
+    links: {
+      github: "https://github.com/V2ADAS",
+    },
     images: [],
     diagram: "adas",
   },
@@ -378,3 +435,7 @@ export const projects: Project[] = [
 
 export const getProjectBySlug = (slug: string) =>
   projects.find((p) => p.slug === slug);
+
+/** Where a project card should link — a bespoke page if it has one. */
+export const getProjectHref = (project: Project) =>
+  project.href ?? `/projects/${project.slug}`;

@@ -3,6 +3,9 @@ export interface ExperienceEntry {
   company: string;
   period: string;
   detail: string;
+  /** Public product or company link, when the work shipped somewhere visible. */
+  href?: string;
+  stack?: string[];
 }
 
 export const experience: ExperienceEntry[] = [
@@ -12,17 +15,22 @@ export const experience: ExperienceEntry[] = [
     period: "Nov 2024 — Apr 2025",
     detail:
       "Built and deployed a Django REST API and business-analytics dashboard for a live client product used for inventory tracking.",
+    href: "https://thestockgo.com",
+    stack: ["Django", "REST APIs", "PostgreSQL", "Analytics Dashboard"],
   },
   {
     role: "Backend Developer Intern",
     company: "Venture Appital",
     period: "Oct 2024 — Feb 2025",
     detail: "Built modular RESTful microservices in Flask with full unit-test coverage.",
+    stack: ["Flask", "REST APIs", "Microservices", "Unit Testing"],
   },
   {
     role: "Full Stack Developer Intern",
     company: "NfrtiX",
     period: "Mar 2025 — Apr 2025",
-    detail: "Built an internal Django/JavaScript web application to streamline internal operations.",
+    detail:
+      "Built an internal Django/JavaScript web application to streamline internal operations.",
+    stack: ["Django", "JavaScript"],
   },
 ];

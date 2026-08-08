@@ -1,4 +1,5 @@
-import { GraduationCap, Award, Trophy } from "lucide-react";
+import Link from "next/link";
+import { GraduationCap, Award, Trophy, ArrowUpRight } from "lucide-react";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
 import { education } from "@/lib/data/education";
@@ -55,6 +56,13 @@ export function Education() {
                     <Trophy className="size-3.5" />
                     Ranked 5th of ~60 graduation projects — Value competition
                   </div>
+                  <Link
+                    href={education.gradProject.href}
+                    className="group inline-flex items-center gap-1.5 mt-4 text-sm font-medium text-foreground hover:text-brand-pink transition-colors"
+                  >
+                    Explore the full system architecture
+                    <ArrowUpRight className="size-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </Link>
                 </div>
               </div>
             </div>

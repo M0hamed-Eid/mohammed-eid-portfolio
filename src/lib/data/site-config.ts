@@ -15,8 +15,8 @@ export const siteConfig = {
     linkedin: "https://linkedin.com/in/mohammed-eid-abdelmeguid",
     huggingface: "https://huggingface.co/mohammedeid",
     kaggle: "https://www.kaggle.com/m0hammedeid",
-    resume: "/resume.pdf",
+    resume: "/Mohammed-Eid-Abdelmeguid-Resume.pdf",
     portfolioRepo: "https://github.com/M0hamed-Eid/mohammed-eid-portfolio",
   },
-  url: "https://mohammed-eid.vercel.app",
+  url: "https://mohammed-eid-portfolio.vercel.app",
 } as const;

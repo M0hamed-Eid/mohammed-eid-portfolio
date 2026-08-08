@@ -3,10 +3,12 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { useFocusOnOpen } from "@/components/shared/use-focus-on-open";
 import type { ProjectImage } from "@/lib/data/projects";
 
 export function ImageLightboxGallery({ images }: { images: ProjectImage[] }) {
   const [active, setActive] = useState<ProjectImage | null>(null);
+  const panelRef = useFocusOnOpen<HTMLDivElement>(!!active);
 
   if (images.length === 0) return null;
 
@@ -40,7 +42,11 @@ export function ImageLightboxGallery({ images }: { images: ProjectImage[] }) {
         <DialogContent className="max-w-4xl bg-transparent border-none shadow-none p-0">
           <DialogTitle className="sr-only">{active?.alt}</DialogTitle>
           {active && (
-            <div className="relative w-full aspect-video rounded-2xl overflow-hidden glass">
+            <div
+              ref={panelRef}
+              tabIndex={-1}
+              className="relative w-full aspect-video rounded-2xl overflow-hidden glass outline-none"
+            >
               <Image
                 src={active.src}
                 alt={active.alt}
@@ -48,6 +54,11 @@ export function ImageLightboxGallery({ images }: { images: ProjectImage[] }) {
                 sizes="90vw"
                 className="object-contain"
               />
+              {active.caption && (
+                <p className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-5 pb-4 pt-10 text-sm text-white/90">
+                  {active.caption}
+                </p>
+              )}
             </div>
           )}
         </DialogContent>

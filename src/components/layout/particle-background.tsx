@@ -109,10 +109,24 @@ export function ParticleBackground() {
       resize();
       initNodes();
     };
+
+    // Don't burn CPU (and battery) animating a canvas nobody can see.
+    const handleVisibility = () => {
+      if (prefersReducedMotion) return;
+      if (document.hidden) {
+        cancelAnimationFrame(animationFrame);
+      } else {
+        cancelAnimationFrame(animationFrame);
+        draw();
+      }
+    };
+
     window.addEventListener("resize", handleResize);
+    document.addEventListener("visibilitychange", handleVisibility);
 
     return () => {
       window.removeEventListener("resize", handleResize);
+      document.removeEventListener("visibilitychange", handleVisibility);
       cancelAnimationFrame(animationFrame);
     };
   }, []);

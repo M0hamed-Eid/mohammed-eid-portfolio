@@ -8,21 +8,17 @@ import { Certifications } from "@/components/sections/certifications";
 import { Publications } from "@/components/sections/publications";
 import { Achievements } from "@/components/sections/achievements";
 import { Contact } from "@/components/sections/contact";
-import { checkProfilePhotoExists, checkCertificateImages } from "@/lib/check-assets";
 
 export default function Home() {
-  const hasPhoto = checkProfilePhotoExists();
-  const certImages = checkCertificateImages();
-
   return (
     <>
-      <Hero hasPhoto={hasPhoto} />
+      <Hero />
       <About />
       <Education />
       <Skills />
       <Projects />
       <Experience />
-      <Certifications availableImages={certImages} />
+      <Certifications />
       <Publications />
       <Achievements />
       <Contact />

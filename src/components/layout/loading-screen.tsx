@@ -1,47 +1,25 @@
-"use client";
+/**
+ * A brief brand splash on hard page loads only.
+ *
+ * Deliberately has no React state: the overlay is server-rendered and dismisses
+ * itself with a CSS animation, and `SessionVisitScript` marks repeat visits on
+ * the document element *before* first paint so returning visitors never see it
+ * flash over already-painted content. Keeping this out of React also keeps it
+ * off the hydration path, so it cannot delay interactivity.
+ */
 
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+const VISIT_SCRIPT = `try{var k='me-portfolio-visited';if(sessionStorage.getItem(k)){document.documentElement.classList.add('session-visited')}else{sessionStorage.setItem(k,'1')}}catch(e){}`;
+
+export function SessionVisitScript() {
+  return <script dangerouslySetInnerHTML={{ __html: VISIT_SCRIPT }} />;
+}
 
 export function LoadingScreen() {
-  const [visible, setVisible] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    if (typeof window === "undefined") return;
-    const hasVisited = sessionStorage.getItem("me-portfolio-visited");
-    if (hasVisited) return;
-
-    setVisible(true);
-    const timer = setTimeout(() => {
-      setVisible(false);
-      sessionStorage.setItem("me-portfolio-visited", "1");
-    }, 1100);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!mounted) return null;
-
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-background"
-        >
-          <motion.span
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="font-display text-5xl"
-          >
-            M<span className="text-gradient-brand animate-gradient">.</span>
-          </motion.span>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <div className="splash-screen" aria-hidden>
+      <span className="font-display text-5xl">
+        M<span className="text-gradient-brand animate-gradient">.</span>
+      </span>
+    </div>
   );
 }

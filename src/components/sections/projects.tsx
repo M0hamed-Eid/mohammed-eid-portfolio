@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, Users } from "lucide-react";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
-import { projects } from "@/lib/data/projects";
+import { projects, getProjectHref } from "@/lib/data/projects";
 import { Badge } from "@/components/ui/badge";
 
 export function Projects() {
@@ -15,13 +15,17 @@ export function Projects() {
         <SectionHeading
           eyebrow="Featured Work"
           title="Selected projects."
-          description="Five projects spanning multi-agent RAG systems, Arabic NLP, multimodal AI, classical ML, and computer vision — each grounded in real, verifiable results."
+          description="Five projects spanning multi-agent RAG systems, Arabic NLP, multimodal AI, classical ML, and a bare-metal autonomous driving stack — each grounded in real, verifiable results."
         />
 
         <div className="mt-12 grid md:grid-cols-2 gap-6">
           {projects.map((project, idx) => (
             <Reveal key={project.slug} delay={(idx % 2) * 0.1}>
-              <Link href={`/projects/${project.slug}`} className="group block h-full">
+              <Link
+                href={getProjectHref(project)}
+                aria-label={`${project.title} — ${project.subtitle}`}
+                className="group block h-full rounded-3xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-pink focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
                 <motion.div
                   whileHover={{ y: -6 }}
                   transition={{ duration: 0.25, ease: "easeOut" }}

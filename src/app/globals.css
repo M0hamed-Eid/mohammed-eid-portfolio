@@ -240,7 +240,39 @@
   animation: marquee 32s linear infinite;
 }
 
+/*
+ * Brand splash. Server-rendered and self-dismissing in CSS so it never holds
+ * React state; hidden outright for repeat visits in the same session and for
+ * anyone who prefers reduced motion.
+ */
+@keyframes splash-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background);
+  pointer-events: none;
+  animation: splash-out 0.45s ease-in-out 0.5s forwards;
+}
+
+:root.session-visited .splash-screen {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .splash-screen {
+    display: none;
+  }
+
   *,
   *::before,
   *::after {

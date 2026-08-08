@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Mail } from "lucide-react";
 import { BrandIcon } from "@/components/shared/brand-icon";
 import { siteConfig } from "@/lib/data/site-config";
@@ -9,9 +10,9 @@ export function Footer() {
     <footer className="relative border-t border-white/10 mt-24">
       <div className="mx-auto max-w-6xl px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-6">
         <div className="text-center sm:text-left">
-          <a href="#top" className="font-display text-xl">
+          <Link href="/" className="font-display text-xl">
             Mohammed Eid<span className="text-gradient-brand">.</span>
-          </a>
+          </Link>
           <p className="text-sm text-muted-foreground mt-1">
             AI Engineer · Machine Learning Engineer · Data Scientist
           </p>
@@ -29,6 +30,9 @@ export function Footer() {
           </FooterLink>
           <FooterLink href={siteConfig.links.huggingface} label="Hugging Face">
             <BrandIcon name="huggingface" className="size-4" />
+          </FooterLink>
+          <FooterLink href={siteConfig.links.kaggle} label="Kaggle">
+            <BrandIcon name="kaggle" className="size-4" />
           </FooterLink>
         </div>
 

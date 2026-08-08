@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight, Download, MapPin } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { AnimatedCounter } from "@/components/shared/animated-counter";
@@ -16,8 +17,17 @@ const STATS = [
   { value: 890, suffix: "K+", label: "Words in Published Dataset" },
 ];
 
-export function Hero({ hasPhoto }: { hasPhoto: boolean }) {
+/** Capability chips that orbit the portrait — the AI-focused branding, made visual. */
+const ORBIT_CHIPS = [
+  { label: "RAG", className: "-top-3 -right-4", delay: 0 },
+  { label: "LLM Agents", className: "top-1/4 -left-14 sm:-left-20", delay: 0.6 },
+  { label: "NLP", className: "bottom-1/4 -right-12 sm:-right-16", delay: 1.2 },
+  { label: "Computer Vision", className: "-bottom-2 left-0", delay: 1.8 },
+];
+
+export function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -31,8 +41,8 @@ export function Hero({ hasPhoto }: { hasPhoto: boolean }) {
       id="top"
       className="relative min-h-[92vh] flex items-center pt-28 pb-16 sm:pt-32"
     >
-      <div className="mx-auto max-w-6xl w-full px-6 grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-14 items-center">
-        <div>
+      <div className="mx-auto max-w-6xl w-full px-6 grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-14 lg:gap-10 items-center">
+        <div className="order-2 lg:order-1">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -112,12 +122,12 @@ export function Hero({ hasPhoto }: { hasPhoto: boolean }) {
               <Download className="size-4" />
               Download CV
             </a>
-            <a
-              href="#contact"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-2"
+            <Link
+              href="/resume"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-2 underline-offset-4 hover:underline"
             >
-              Contact Me →
-            </a>
+              Preview résumé
+            </Link>
           </motion.div>
 
           <motion.div
@@ -150,43 +160,73 @@ export function Hero({ hasPhoto }: { hasPhoto: boolean }) {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative mx-auto"
+          transition={{ duration: 0.9, delay: 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className="order-1 lg:order-2 relative mx-auto"
         >
-          <div className="relative size-72 sm:size-88 mx-auto">
-            <div className="absolute -inset-3 rounded-full bg-gradient-to-tr from-brand-violet via-brand-pink to-brand-orange opacity-70 blur-2xl animate-gradient" />
+          <div className="relative size-64 sm:size-80 lg:size-88 mx-auto">
+            {/* soft brand bloom */}
+            <div className="absolute -inset-4 rounded-full bg-gradient-to-tr from-brand-violet via-brand-pink to-brand-orange opacity-60 blur-3xl animate-gradient" />
+
+            {/* slow counter-rotating accent rings */}
+            <motion.div
+              aria-hidden
+              animate={reduceMotion ? undefined : { rotate: 360 }}
+              transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+              className="absolute -inset-5 rounded-full border border-dashed border-white/10"
+            >
+              <span className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-pink shadow-[0_0_12px] shadow-brand-pink/60" />
+            </motion.div>
+            <motion.div
+              aria-hidden
+              animate={reduceMotion ? undefined : { rotate: -360 }}
+              transition={{ duration: 44, repeat: Infinity, ease: "linear" }}
+              className="absolute -inset-10 rounded-full border border-white/[0.06]"
+            >
+              <span className="absolute left-0 top-1/2 size-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-violet shadow-[0_0_10px] shadow-brand-violet/60" />
+            </motion.div>
+
+            {/* gradient rim */}
             <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-brand-violet via-brand-pink to-brand-orange p-[2px] animate-gradient">
               <div className="size-full rounded-full bg-background" />
             </div>
+
             <div className="absolute inset-2 rounded-full overflow-hidden glass">
-              {hasPhoto ? (
-                <Image
-                  src="/images/profile/photo.jpg"
-                  alt={siteConfig.name}
-                  fill
-                  sizes="(min-width: 640px) 22rem, 18rem"
-                  className="object-cover"
-                  priority
-                />
-              ) : (
-                <div className="flex size-full items-center justify-center font-display text-6xl text-gradient-brand">
-                  {siteConfig.shortName
-                    .split(" ")
-                    .map((w) => w[0])
-                    .join("")}
-                </div>
-              )}
+              <Image
+                src="/images/profile/photo.jpg"
+                alt={`${siteConfig.name} — ${siteConfig.roles[0]}`}
+                fill
+                sizes="(min-width: 1024px) 22rem, (min-width: 640px) 20rem, 16rem"
+                className="object-cover"
+                priority
+                fetchPriority="high"
+              />
             </div>
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-3 -right-2 glass rounded-full px-3 py-1.5 text-xs font-semibold tracking-wide"
-            >
-              AI <span className="text-brand-violet">·</span> ML{" "}
-              <span className="text-brand-pink">·</span> DS
-            </motion.div>
+
+            {/* orbiting capability chips */}
+            {ORBIT_CHIPS.map((chip) => (
+              <motion.span
+                key={chip.label}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.7 + chip.delay * 0.25 }}
+                className={cn("absolute", chip.className)}
+              >
+                <motion.span
+                  animate={reduceMotion ? undefined : { y: [0, -9, 0] }}
+                  transition={{
+                    duration: 5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: chip.delay,
+                  }}
+                  className="block glass rounded-full px-3 py-1.5 text-[0.7rem] font-semibold tracking-wide whitespace-nowrap"
+                >
+                  {chip.label}
+                </motion.span>
+              </motion.span>
+            ))}
           </div>
         </motion.div>
       </div>
