@@ -26,6 +26,7 @@
 \definecolor{primaryColor}{RGB}{0, 79, 144}
 \usepackage{enumitem}
 \usepackage{amsmath}
+\usepackage{tikz}              % draws the external-link icon as a vector
 \usepackage{etoolbox}          % required by \AtBeginEnvironment below
 \usepackage{microtype}         % character protrusion + font expansion
 \usepackage[
@@ -111,10 +112,35 @@
     \setlength{\topsep}{0pt}\par\kern\topsep\centering\color{primaryColor}\linespread{1.3}
 }{\par\kern\topsep}
 
-% NOTE: links are plain coloured text, with no trailing icon.
-% The previous \href redefinition appended \faExternalLink*, whose glyph extracts
-% from the PDF text layer as the character "2" — so an ATS parser read titles as
-% "Palestinian Cultural Knowledge Platform 2". Colour alone signals the link.
+%------------------------------------------------------------------------------
+% External-link indicator.
+%
+% Drawn as a TikZ vector, NOT as a font glyph. The obvious approach —
+% \faExternalLink* from fontawesome5 — renders correctly but its glyph has no
+% usable ToUnicode mapping, so it extracts from the PDF text layer as the
+% character "2". An ATS then reads "Palestinian Cultural Knowledge Platform 2"
+% and "IBM AI Engineering Professional Certificate 2". A vector path contributes
+% nothing to the text layer, so the icon is visible to humans and invisible to
+% parsers. Sized in ex units so it scales with whatever text it follows.
+%------------------------------------------------------------------------------
+\newcommand{\linkicon}{%
+    \raisebox{0.02ex}{% sit optically on the baseline
+        \begin{tikzpicture}[x=1ex, y=1ex, line width=0.14ex,
+                            line cap=round, line join=round]
+            % open-cornered box
+            \draw[primaryColor] (0,0) -- (0,1.35) -- (1.35,1.35) -- (1.35,0.72);
+            \draw[primaryColor] (0,0) -- (1.35,0) -- (1.35,0.2);
+            % arrow escaping the top-right corner
+            \draw[primaryColor] (0.72,0.62) -- (1.62,1.52);
+            \draw[primaryColor] (1.0,1.52) -- (1.62,1.52) -- (1.62,0.9);
+        \end{tikzpicture}%
+    }%
+}
+
+% Every web link gets the icon; \hrefWithoutArrow stays available for mailto:
+% and tel:, where an "external link" marker would be noise.
+\let\hrefWithoutArrow\href
+\renewcommand{\href}[2]{\hrefWithoutArrow{#1}{#2\,\linkicon}}
 
 \begin{document}
 
@@ -127,9 +153,9 @@
     \normalsize
     Alexandria, Egypt
     \quad$|$\quad
-    \href{mailto:MohammedEidAbdelmeguid@gmail.com}{MohammedEidAbdelmeguid@gmail.com}
+    \hrefWithoutArrow{mailto:MohammedEidAbdelmeguid@gmail.com}{MohammedEidAbdelmeguid@gmail.com}
     \quad$|$\quad
-    \href{tel:+20-12-10649832}{+20 12 10649832}
+    \hrefWithoutArrow{tel:+20-12-10649832}{+20 12 10649832}
     \newline
     \href{https://mohammed-eid-portfolio.vercel.app}{Portfolio}
     \quad$|$\quad
@@ -280,6 +306,7 @@ Early-career AI/ML Engineer who builds end-to-end AI systems --- retrieval-augme
     \item \textbf{Microsoft Data Engineer (159 hours)} --- Digital Egypt Pioneers Initiative (DEPI) \hfill Apr -- Oct 2024
 
     \item Preparing for \textbf{AWS Certified Machine Learning Engineer -- Associate (MLA-C01)}
+    \item Preparing for \textbf{Huawei HCIA-AI}
 \end{highlights}
 
 \end{document}

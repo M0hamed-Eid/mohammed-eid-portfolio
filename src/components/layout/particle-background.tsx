@@ -133,11 +133,13 @@ export function ParticleBackground() {
 
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden bg-background">
-      <canvas ref={canvasRef} className="absolute inset-0 opacity-70" aria-hidden />
-      <div className="absolute -top-40 -left-40 h-[32rem] w-[32rem] rounded-full bg-brand-violet/20 blur-[120px] animate-float-slow" />
-      <div className="absolute top-1/3 -right-40 h-[28rem] w-[28rem] rounded-full bg-brand-pink/15 blur-[120px] animate-float" />
-      <div className="absolute bottom-0 left-1/4 h-[24rem] w-[24rem] rounded-full bg-brand-orange/10 blur-[120px] animate-float-slow" />
-      <div className="absolute inset-0 bg-grid opacity-[0.15] [mask-image:radial-gradient(ellipse_at_center,black_10%,transparent_75%)]" />
+      {/* Dimmed from 70%: the constellation sat close enough to the text layer to
+          eat into the effective contrast of secondary copy. */}
+      <canvas ref={canvasRef} className="absolute inset-0 opacity-40" aria-hidden />
+      <div className="absolute -top-40 -left-40 h-[32rem] w-[32rem] rounded-full bg-brand-violet/12 blur-[130px] animate-float-slow" />
+      <div className="absolute top-1/3 -right-40 h-[28rem] w-[28rem] rounded-full bg-brand-pink/10 blur-[130px] animate-float" />
+      <div className="absolute bottom-0 left-1/4 h-[24rem] w-[24rem] rounded-full bg-brand-orange/8 blur-[130px] animate-float-slow" />
+      <div className="absolute inset-0 bg-grid opacity-[0.08] [mask-image:radial-gradient(ellipse_at_center,black_10%,transparent_75%)]" />
     </div>
   );
 }

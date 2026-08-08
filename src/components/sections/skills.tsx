@@ -10,24 +10,22 @@ import {
   tierDescription,
   type SkillTier,
 } from "@/lib/data/skills";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
+/**
+ * The three tiers are distinguished by fill *and* border style, not hue alone —
+ * so the difference survives a colour-blind reader, a dim screen, or a grayscale
+ * print. Core is solid and filled, Proficient is a plain outline, Familiar is
+ * dashed and unfilled.
+ */
 const TIER_STYLES: Record<SkillTier, string> = {
-  core: "bg-brand-violet/15 text-brand-violet border-brand-violet/30",
-  proficient: "bg-brand-pink/10 text-brand-pink border-brand-pink/25",
-  familiar: "bg-white/5 text-muted-foreground border-white/10",
+  core: "bg-brand-violet/25 text-white border-solid border-brand-violet/70 font-semibold",
+  proficient: "bg-brand-pink/10 text-brand-pink border-solid border-brand-pink/45",
+  familiar:
+    "bg-transparent text-muted-foreground border-dashed border-white/25",
 };
 
-const TIER_DOTS: Record<SkillTier, number> = {
-  core: 3,
-  proficient: 2,
-  familiar: 1,
-};
+const TIER_ORDER: SkillTier[] = ["core", "proficient", "familiar"];
 
 export function Skills() {
   return (
@@ -39,27 +37,29 @@ export function Skills() {
           description="Grouped by area, with an honest signal of depth — how much real, shipped work backs each one, not a made-up percentage."
         />
 
-        <div className="mt-12 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
-          {(Object.keys(tierLabel) as SkillTier[]).map((tier) => (
-            <Tooltip key={tier}>
-              <TooltipTrigger className="flex items-center gap-1.5 cursor-help">
-                <span className="flex gap-0.5">
-                  {Array.from({ length: 3 }).map((_, i) => (
-                    <span
-                      key={i}
-                      className={cn(
-                        "size-1.5 rounded-full",
-                        i < TIER_DOTS[tier] ? "bg-brand-pink" : "bg-white/15"
-                      )}
-                    />
-                  ))}
-                </span>
-                {tierLabel[tier]}
-              </TooltipTrigger>
-              <TooltipContent>{tierDescription[tier]}</TooltipContent>
-            </Tooltip>
-          ))}
-        </div>
+        {/* Legend samples are rendered with the identical pill styles used below,
+            so the mapping between a tag's appearance and its meaning is direct. */}
+        <Reveal delay={0.2}>
+          <dl className="mt-10 grid gap-3 sm:grid-cols-3 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+            {TIER_ORDER.map((tier) => (
+              <div key={tier} className="flex flex-col gap-2">
+                <dt>
+                  <span
+                    className={cn(
+                      "inline-block rounded-full border px-3 py-1 text-sm",
+                      TIER_STYLES[tier]
+                    )}
+                  >
+                    {tierLabel[tier]}
+                  </span>
+                </dt>
+                <dd className="text-sm text-muted-foreground leading-relaxed">
+                  {tierDescription[tier]}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </Reveal>
 
         <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {skillCategories.map((category, idx) => {
@@ -81,7 +81,7 @@ export function Skills() {
                         key={skill.name}
                         variants={revealItem}
                         className={cn(
-                          "rounded-full border px-2.5 py-1 text-xs font-medium",
+                          "rounded-full border px-3 py-1 text-sm font-medium",
                           TIER_STYLES[skill.tier]
                         )}
                       >
