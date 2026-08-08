@@ -1,0 +1,83 @@
+name: Build CV
+
+# The LaTeX source in cv/ is the single source of truth for the résumé.
+# Any push that touches it recompiles the PDF, regenerates the /resume preview
+# images, and commits the results — which in turn triggers a Vercel deploy.
+# Nothing in the portfolio code needs editing when the CV changes.
+
+on:
+  push:
+    paths:
+      - "cv/**"
+      - ".github/workflows/build-cv.yml"
+  workflow_dispatch: # lets you rebuild by hand from the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-cv
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compile LaTeX
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: main.tex
+          working_directory: cv
+          # Default image is texlive-full, which carries sourcesanspro,
+          # fontawesome5, paracol and microtype. Left unpinned so CI matches the
+          # current TeX Live this was validated against locally.
+
+      - name: Install PDF tooling
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends poppler-utils qpdf
+
+      - name: Optimise the PDF for web delivery
+        run: |
+          # Linearise ("fast web view") so browsers can render page 1 before the
+          # whole file arrives, and compress embedded streams.
+          qpdf --linearize --object-streams=generate \
+            cv/main.pdf public/Mohammed-Eid-Abdelmeguid-Resume.pdf
+          ls -lh public/Mohammed-Eid-Abdelmeguid-Resume.pdf
+
+      - name: Render preview images
+        run: |
+          rm -f public/images/resume/page-*.jpg
+          mkdir -p public/images/resume
+          pdftoppm -jpeg -jpegopt quality=85,progressive=y -r 150 \
+            public/Mohammed-Eid-Abdelmeguid-Resume.pdf public/images/resume/page
+          # pdftoppm emits page-1.jpg, page-2.jpg… but zero-pads past 9 pages.
+          for f in public/images/resume/page-0*.jpg; do
+            [ -e "$f" ] || continue
+            mv "$f" "$(echo "$f" | sed 's/page-0*/page-/')"
+          done
+          ls -lh public/images/resume/
+
+      - name: Record build metadata
+        run: |
+          printf '{\n  "builtAt": "%s",\n  "commit": "%s",\n  "pages": %s\n}\n' \
+            "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            "$GITHUB_SHA" \
+            "$(pdfinfo public/Mohammed-Eid-Abdelmeguid-Resume.pdf | awk '/^Pages:/{print $2}')" \
+            > cv/build-info.json
+          cat cv/build-info.json
+
+      - name: Commit build output
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/Mohammed-Eid-Abdelmeguid-Resume.pdf \
+                  public/images/resume cv/build-info.json
+          if git diff --staged --quiet; then
+            echo "CV output unchanged — nothing to commit."
+          else
+            git commit -m "chore(cv): rebuild résumé PDF and previews [skip ci]"
+            git push
+          fi

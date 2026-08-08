@@ -49,6 +49,9 @@ export function Contact() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
     "idle"
   );
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  // Keeps the visitor's own words so the mailto fallback can carry them over.
+  const [lastAttempt, setLastAttempt] = useState<ContactForm | null>(null);
 
   const {
     register,
@@ -59,19 +62,40 @@ export function Contact() {
 
   const onSubmit = async (data: ContactForm) => {
     setStatus("loading");
+    setErrorMessage(null);
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error("Request failed");
+      const payload = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        setLastAttempt(data);
+        setErrorMessage(
+          payload?.error ?? "Couldn't send that message — please email me directly."
+        );
+        setStatus("error");
+        return;
+      }
+
       setStatus("success");
+      setLastAttempt(null);
       reset();
     } catch {
+      setLastAttempt(data);
+      setErrorMessage(
+        "Couldn't reach the server — please email me directly instead."
+      );
       setStatus("error");
     }
   };
+
+  // Fallback that cannot fail: hand the message to the visitor's mail client.
+  const mailtoFallback = `mailto:${siteConfig.email}?subject=${encodeURIComponent(
+    lastAttempt ? `Portfolio enquiry from ${lastAttempt.name}` : "Portfolio enquiry"
+  )}&body=${encodeURIComponent(lastAttempt?.message ?? "")}`;
 
   return (
     <section id="contact" className="relative py-28">
@@ -237,10 +261,22 @@ export function Contact() {
                 </p>
               )}
               {status === "error" && (
-                <p className="flex items-center gap-1.5 text-sm text-destructive">
-                  <XCircle className="size-4" />
-                  Something went wrong. Email me directly instead.
-                </p>
+                <div
+                  role="alert"
+                  className="rounded-xl border border-destructive/30 bg-destructive/5 p-4"
+                >
+                  <p className="flex items-start gap-1.5 text-sm text-destructive">
+                    <XCircle className="size-4 shrink-0 mt-0.5" />
+                    <span>{errorMessage}</span>
+                  </p>
+                  <a
+                    href={mailtoFallback}
+                    className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-brand-pink transition-colors underline-offset-4 hover:underline"
+                  >
+                    <Mail className="size-3.5" />
+                    Open this message in your email app
+                  </a>
+                </div>
               )}
             </form>
           </Reveal>

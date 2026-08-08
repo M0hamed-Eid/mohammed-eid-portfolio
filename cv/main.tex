@@ -1,0 +1,281 @@
+%==============================================================================
+%  Mohammed Eid Abdelmeguid — CV
+%
+%  SOURCE OF TRUTH. Edit this file (in Overleaf or in this repo), never the PDF.
+%  Pushing a change to this file rebuilds public/Mohammed-Eid-Abdelmeguid-Resume.pdf
+%  and the /resume preview images via .github/workflows/build-cv.yml.
+%
+%  Compiles with pdfLaTeX.
+%==============================================================================
+
+\documentclass[11pt, letterpaper]{article}
+
+% Packages:
+\usepackage[
+    ignoreheadfoot,
+    top=1.1 cm,
+    bottom=1.1 cm,
+    left=1.5 cm,
+    right=1.5 cm,
+    footskip=0.5 cm,
+]{geometry}
+\usepackage[explicit]{titlesec}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage[dvipsnames]{xcolor}
+\definecolor{primaryColor}{RGB}{0, 79, 144}
+\usepackage{enumitem}
+\usepackage{fontawesome5}
+\usepackage{amsmath}
+\usepackage{etoolbox}          % required by \AtBeginEnvironment below
+\usepackage{microtype}         % character protrusion + font expansion
+\usepackage[
+    pdftitle={Mohammed Eid Abdelmeguid — AI/ML Engineer CV},
+    pdfauthor={Mohammed Eid Abdelmeguid},
+    pdfsubject={AI Engineer / Machine Learning Engineer / Data Scientist},
+    pdfkeywords={AI Engineer, Machine Learning Engineer, Data Scientist, LLM, RAG,
+                 NLP, Deep Learning, Python, PyTorch, TensorFlow, PostgreSQL, pgvector},
+    colorlinks=true,
+    urlcolor=primaryColor
+]{hyperref}
+\usepackage{calc}
+\usepackage{bookmark}
+\usepackage{changepage}
+\usepackage{paracol}
+\usepackage{ifthen}
+\usepackage{needspace}
+\usepackage{iftex}
+
+% ATS compatibility
+\ifPDFTeX
+    \input{glyphtounicode}
+    \pdfgentounicode=1
+    \usepackage[T1]{fontenc}
+    \usepackage[utf8]{inputenc}
+    \usepackage{lmodern}
+\fi
+
+\usepackage[default, type1]{sourcesanspro}
+
+% Let TeX loosen a tight line rather than crushing the word spaces on it.
+% Without this, long unbreakable compounds ("multi-service Docker Compose")
+% squeeze inter-word space so far that PDF text extraction — and therefore
+% ATS parsers — read the words as a single run-together token.
+\setlength{\emergencystretch}{2em}
+\hyphenpenalty=100
+\tolerance=2000
+
+% Very slightly tighter leading — enough to hold the CV to two pages without
+% reading as cramped. Do not push below 0.97.
+\linespread{0.98}
+
+% Style adjustments
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt}
+\pagestyle{empty}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}
+\setlength{\topskip}{0pt}
+\setlength{\columnsep}{0.1cm}
+
+% Section title formatting
+\titleformat{\section}
+    {\needspace{2\baselineskip}\large\color{primaryColor}} % Format
+    {} % Label (empty for unnumbered sections)
+    {0pt} % Separator (no space needed)
+    {\textbf{#1}\hspace{0.1cm}\titlerule[0.5pt]\hspace{-0.1cm}} % Title
+    [] % Optional argument (not needed here)
+\titlespacing{\section}{-1pt}{0.16 cm}{0.08 cm}
+
+% Custom environments
+\newenvironment{highlights}{
+    \begin{itemize}[
+        topsep=0.04 cm,
+        parsep=0.03 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=0.4 cm + 10pt
+    ]
+}{\end{itemize}}
+
+\newenvironment{onecolentry}{
+    \begin{adjustwidth}{0.2 cm + 0.00001 cm}{0.2 cm + 0.00001 cm}
+}{\end{adjustwidth}}
+
+\newenvironment{twocolentry}[2][]{
+    \onecolentry
+    \def\secondColumn{#2}
+    \setcolumnwidth{\fill, 4.2 cm}
+    \begin{paracol}{2}
+}{
+    \switchcolumn \raggedleft \secondColumn
+    \end{paracol}
+    \endonecolentry
+}
+
+\newenvironment{header}{
+    \setlength{\topsep}{0pt}\par\kern\topsep\centering\color{primaryColor}\linespread{1.3}
+}{\par\kern\topsep}
+
+\let\hrefWithoutArrow\href
+\renewcommand{\href}[2]{\hrefWithoutArrow{#1}{\mbox{\ifthenelse{\equal{#2}{}}{ }{#2 }\raisebox{.15ex}{\footnotesize \faExternalLink*}}}}
+
+\begin{document}
+
+\begin{header}
+    \fontsize{27 pt}{27 pt}
+    \textbf{Mohammed Eid Abdelmeguid}
+
+    \vspace{0.2 cm}
+
+    \normalsize
+    \mbox{{\footnotesize\faMapMarker*}\hspace*{0.13cm}Alexandria, Egypt}
+    \kern 0.5 cm
+    \mbox{\hrefWithoutArrow{mailto:MohammedEidAbdelmeguid@gmail.com}{{\footnotesize\faEnvelope[regular]}\hspace*{0.13cm}MohammedEidAbdelmeguid@gmail.com}}
+    \kern 0.5 cm
+    \mbox{\hrefWithoutArrow{tel:+20-12-10649832}{{\footnotesize\faPhone*}\hspace*{0.13cm}+20 12 10649832}}
+    \kern 0.5 cm
+    \newline
+    \mbox{\href{https://mohammed-eid-portfolio.vercel.app}{{\footnotesize\faGlobe}\hspace*{0.13cm}Portfolio}}
+    \kern 0.5 cm
+    \mbox{\href{https://github.com/M0hamed-Eid}{{\footnotesize\faGithub}\hspace*{0.13cm}GitHub}}
+    \kern 0.5 cm
+    \mbox{\href{https://linkedin.com/in/mohammed-eid-abdelmeguid}{{\footnotesize\faLinkedinIn}\hspace*{0.13cm}LinkedIn}}
+    \kern 0.5 cm
+    \mbox{\href{https://huggingface.co/mohammedeid}{{\footnotesize\faDatabase}\hspace*{0.13cm}Hugging Face}}
+    \kern 0.5 cm
+    \mbox{\href{https://www.kaggle.com/m0hammedeid}{{\footnotesize\faTrophy}\hspace*{0.13cm}Kaggle}}
+\end{header}
+
+\vspace{0.25 cm}
+
+% ─── SUMMARY ───────────────────────────────────────────────────────────────────
+\section{Summary}
+\begin{onecolentry}
+AI/ML Engineer who designs and ships end-to-end AI systems: a multi-agent RAG platform with a custom two-stage recommendation engine, an Arabic NLP knowledge-graph and retrieval pipeline behind a publicly released dataset, and a multimodal speech--vision--language pipeline scoring 79\% on an ArabicNLP 2026 shared task --- roughly double the organizers' baseline. Works across the full ML lifecycle (ingestion, feature engineering, evaluation, deployment design) on a software engineering foundation in Python, Django, FastAPI, and PostgreSQL. Completing a 9-month AI \& Data Science diploma on an MCIT scholarship; seeking an AI Engineer, Machine Learning Engineer, or Data Scientist role.
+\end{onecolentry}
+
+% ─── SKILLS ────────────────────────────────────────────────────────────────────
+\section{Skills}
+
+\begin{onecolentry}
+\textbf{Languages:} Python, SQL, C \quad\textbullet\quad \textbf{Spoken:} Arabic (Native), English (Professional)
+
+\textbf{Machine Learning:} Scikit-learn, XGBoost, Supervised \& Unsupervised Learning, Feature Engineering, Hyperparameter Tuning (Grid Search), Model Evaluation \& Benchmarking
+
+\textbf{Deep Learning:} PyTorch, TensorFlow, Keras, Neural Networks, Computer Vision
+
+\textbf{LLM \& RAG:} Retrieval-Augmented Generation, Vector Databases (pgvector), Embeddings (Sentence-Transformers), Multi-Agent Systems, Prompt Engineering, JSON-Schema-Constrained Decoding, Knowledge Graphs (NetworkX, Wikidata Entity Linking), Vision-Language Models (Qwen-VL), LLM Serving (Groq API, Ollama)
+
+\textbf{NLP \& Speech:} CAMeL Tools (Arabic NLP), NLTK, Named Entity Recognition, Topic Modeling (BERTopic), Arabic Text Normalization, Speech-to-Text (Whisper / faster-whisper)
+
+\textbf{Data Science:} Pandas, NumPy, Matplotlib, Plotly, Exploratory Data Analysis, Statistical Evaluation, Time-Series Analysis
+
+\textbf{Backend \& Data Engineering:} Django, FastAPI, Flask, REST APIs, Celery, SQLAlchemy, Scrapy, ETL Pipelines, MinHash/LSH Deduplication, PostgreSQL, pgvector, Redis
+
+\textbf{MLOps \& Tooling:} Offline Evaluation Harnesses (NDCG@10, MAP, Recall@k, F1), Ablation Testing, Schema-Validated Pipelines (Pydantic), Docker \& Docker Compose, Git, GitHub Actions, Linux, Streamlit
+\end{onecolentry}
+
+% ─── PROJECTS ──────────────────────────────────────────────────────────────────
+\section{Projects}
+
+\begin{twocolentry}{May 2026 -- Present}
+    \textbf{AI Compass --- Multi-Agent AI News \& Recommendation Platform}
+    \begin{highlights}
+        \item Led a cross-functional team of five as Team Lead and primary technical contributor, owning system architecture, the AI pipeline, backend/database design, and deployment for a three-service platform (Python/SQLAlchemy pipeline, Django 5.2, Next.js 16) ingesting 7 sources including arXiv, GitHub, Hugging Face and YouTube.
+        \item Designed a 5-agent enrichment and RAG pipeline (local Sentence-Transformer embeddings, PostgreSQL/pgvector, Groq-served LLMs) powering semantic search and a streaming RAG chat assistant.
+        \item Built a deterministic two-stage recommendation engine --- pgvector-similarity and rule-based candidate generation, multi-factor weighted scoring, and MMR diversification --- validated with a custom offline NDCG@10/MAP harness with shadow-mode comparison.
+        \item Owned async infrastructure (Celery + Redis, 3 dedicated queues, 6-job scheduler) and a containerized Docker Compose deployment with Caddy-routed TLS; diagnosed and fixed duplicate task redelivery caused by an 88-minute run exceeding the broker visibility timeout.
+    \end{highlights}
+\end{twocolentry}
+
+\vspace{0.06 cm}
+
+\begin{twocolentry}{Jun -- Aug 2026}
+    \textbf{\href{https://github.com/sarah-sayed-me/Palestinian-Cultural-Knowledge-Platform-Full-Blueprint}{Palestinian Cultural Knowledge Platform}} --- Arabic NLP, RAG \& Knowledge Graph
+    \begin{highlights}
+        \item Primary technical contributor on a 2-person research project turning a quality-scored, deduplicated Arabic/English corpus from 5 sources into structured, queryable knowledge.
+        \item Designed the ingestion pipeline (schema-validated records, composite quality scoring, persistent MinHash/LSH deduplication) and led Arabic NER (CAMeL Tools, F1 0.47) and RAG (embeddings $\to$ pgvector $\to$ locally-served LLM, Recall@5 0.93 over 1,282 indexed passages).
+        \item Built the knowledge-graph pipeline (entity canonicalization, Wikidata entity linking, LLM relation extraction) producing 13,063 canonicalized entities and a 187-edge graph, plus bias and topic analysis (WEAT, BERTopic) served through a FastAPI REST API and a Streamlit dashboard.
+        \item Published a bilingual Arabic/English dataset --- 882 documents, \textasciitilde890K words --- on \href{https://huggingface.co/datasets/palestinian-kg/palestinian-cultural-knowledge}{Hugging Face Datasets}.
+    \end{highlights}
+\end{twocolentry}
+
+\vspace{0.06 cm}
+
+\begin{twocolentry}{Jul -- Aug 2026}
+    \textbf{AynVQA-MSA --- Arabic Spoken Visual Question Answering}
+    \begin{highlights}
+        \item Built an end-to-end multimodal pipeline (audio, vision \& language) for the \textbf{ImageEval 2026 / ArabicNLP} shared task: Whisper ASR $\to$ JSON-schema-constrained LLM parsing of spoken questions and options $\to$ conditional repair escalation $\to$ vision-language-model answer selection.
+        \item Reached \textbf{79.00\% accuracy (395/500)} on the official development split --- nearly double the organizers' MSA baseline (39.8\%) --- lifting a 74.80\% baseline with a 3-step repair-escalation stage, and replacing fragile regex parsing with schema-constrained decoding; chain-of-thought and few-shot prompting were ablated and shipped off by default on measured results.
+    \end{highlights}
+\end{twocolentry}
+
+\vspace{0.06 cm}
+
+\begin{twocolentry}{Mar -- Apr 2026}
+    \textbf{\href{https://github.com/M0hamed-Eid/FitnessTracker}{Fitness Activity Tracker}} --- ML-Powered Exercise Classification
+    \begin{highlights}
+        \item 3-person team project (Digilians AI \& Data Science Diploma) classifying barbell exercises and counting repetitions from wrist-worn accelerometer/gyroscope data; owned preprocessing, feature engineering (Chauvenet outlier removal, PCA, FFT frequency-domain features, k-means clustering), and the evaluation pipeline --- compared 5 classifiers across 5 feature sets via grid search, with Random Forest reaching \textasciitilde99\% held-out test accuracy.
+    \end{highlights}
+\end{twocolentry}
+
+% ─── EXPERIENCE ────────────────────────────────────────────────────────────────
+\section{Work Experience}
+
+\begin{twocolentry}{Nov 2024 -- Apr 2025}
+    \textbf{Freelance Backend Developer} --- StockGo (Qatar)
+    \begin{highlights}
+        \item Built and deployed a Django REST API and business-analytics dashboard for a live commercial inventory-tracking product (thestockgo.com), covering data modeling, API design, and reporting queries over PostgreSQL.
+    \end{highlights}
+\end{twocolentry}
+
+\vspace{0.1cm}
+
+\begin{twocolentry}{Oct 2024 -- Feb 2025}
+    \textbf{Backend Developer Intern} --- Venture Appital
+    \begin{highlights}
+        \item Built modular RESTful microservices in Flask with full unit-test coverage.
+    \end{highlights}
+\end{twocolentry}
+
+\vspace{0.1cm}
+
+\begin{twocolentry}{Mar 2025 -- Apr 2025}
+    \textbf{Full Stack Developer Intern} --- NfrtiX
+    \begin{highlights}
+        \item Built an internal Django/JavaScript web application to streamline internal operations.
+    \end{highlights}
+\end{twocolentry}
+
+% ─── EDUCATION ─────────────────────────────────────────────────────────────────
+\section{Education}
+
+\begin{twocolentry}{Sep 2019 -- Jun 2024}
+    \textbf{Faculty of Engineering, Alexandria University}\\
+    BS in Communication and Electronics Engineering --- CGPA 3.13 / 4.0
+    \begin{highlights}
+        \item Graduation Project: \textbf{\href{https://mohammed-eid-portfolio.vercel.app/adas}{Advanced Driver Assistance Systems (ADAS)}} --- Grade A+, ranked 5th of \textasciitilde60 projects (Value competition). Team Lead over a 5-repository, \textasciitilde800 KB bare-metal C system; owned the software architecture and computer-vision track (lane keeping, automatic emergency braking, sign detection). Mentored by Valeo, sponsored by ITIDA's Egypt Makes Electronics (EME) program.
+    \end{highlights}
+\end{twocolentry}
+
+% ─── CERTIFICATIONS ────────────────────────────────────────────────────────────
+\section{Certifications \& Training}
+
+% Deliberately NOT wrapped in onecolentry: adjustwidth cannot break across a
+% page boundary, which would force this whole block onto a page of its own.
+\begin{highlights}
+    \item \textbf{AI \& Data Science Diploma} --- Digilians (MCIT / Egyptian Military Academy scholarship) \hfill Dec 2025 -- Sep 2026
+
+    \item \textbf{\href{https://www.coursera.org/account/accomplishments/specialization/L3AI1XFNW950}{IBM AI Engineering Professional Certificate}} --- IBM / Coursera \hfill Jun 2026\\
+          \textit{13 courses: deep learning with PyTorch, Keras \& TensorFlow; transformers, fine-tuning, RAG with LangChain}
+
+    \item \textbf{\href{https://www.coursera.org/account/accomplishments/specialization/BZQOVQR0HKXI}{Machine Learning Specialization}} --- Stanford \& DeepLearning.AI (Andrew Ng) \hfill May 2026
+
+    \item \textbf{\href{https://coursera.org/verify/9B7HT7WVGLJ0}{Generative AI for Data Science with Copilot}} --- Microsoft / Coursera \hfill Apr 2026
+
+    \item \textbf{Microsoft Data Engineer (159 hours)} --- Digital Egypt Pioneers Initiative (DEPI) \hfill Apr -- Oct 2024
+
+    \item \textbf{AWS Certified Machine Learning Engineer -- Associate (MLA-C01)} \hfill In Progress
+\end{highlights}
+
+\end{document}

@@ -40,3 +40,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# LaTeX build artefacts from cv/ — the compiled PDF is written to public/ by CI,
+# so only these intermediates are ignored. Do NOT ignore cv/main.pdf's output at
+# public/Mohammed-Eid-Abdelmeguid-Resume.pdf or public/images/resume/.
+cv/*.aux
+cv/*.fdb_latexmk
+cv/*.fls
+cv/*.log
+cv/*.out
+cv/*.synctex.gz
+cv/*.toc
+cv/main.pdf

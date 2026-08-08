@@ -39,22 +39,24 @@ export const certifications: Certification[] = [
   {
     name: "IBM AI Engineering Professional Certificate",
     issuer: "IBM — Coursera",
-    period: "Completed Jun 2026",
+    period: "Jun 2026",
     detail:
       "13-course specialization: deep learning with Keras and PyTorch, generative AI, transformer architectures, fine-tuning, and RAG applications with LangChain.",
     status: "Completed",
     tier: "featured",
+    image: "/images/certificates/coursera-ibm-ai-engineering.jpg",
     verifyUrl:
       "https://www.coursera.org/account/accomplishments/specialization/L3AI1XFNW950",
   },
   {
     name: "Machine Learning Specialization",
     issuer: "Stanford University & DeepLearning.AI (Andrew Ng) — Coursera",
-    period: "Completed May 2026",
+    period: "May 2026",
     detail:
       "Supervised and unsupervised learning, neural networks with TensorFlow, tree ensembles, recommender systems, reinforcement learning, and practical ML development best practices.",
     status: "Completed",
     tier: "featured",
+    image: "/images/certificates/coursera-ml-specialization.jpg",
     verifyUrl:
       "https://www.coursera.org/account/accomplishments/specialization/BZQOVQR0HKXI",
   },
@@ -70,12 +72,14 @@ export const certifications: Certification[] = [
     verifyUrl: "https://coursera.org/verify/9B7HT7WVGLJ0",
   },
   {
-    name: "Data Engineering Professional Program",
-    issuer: "DEPI — Digital Egypt Pioneers Initiative",
+    name: "Microsoft Data Engineer (159 hours)",
+    issuer: "Digital Egypt Pioneers Initiative (DEPI) — Skills Dynamix",
     period: "Apr 2024 — Oct 2024",
-    detail: "End-to-end data engineering: ingestion, ETL pipelines, warehousing, and orchestration.",
+    detail:
+      "159-hour data engineering track: ingestion, ETL pipelines, warehousing, and orchestration on the Microsoft data stack.",
     status: "Completed",
     tier: "featured",
+    image: "/images/certificates/depi-microsoft-data-engineer.jpg",
   },
   {
     name: "AWS Certified Machine Learning Engineer — Associate",

@@ -5,6 +5,7 @@ import { ArrowLeft, Download, ExternalLink, Mail, MapPin, Phone } from "lucide-r
 import { buttonVariants } from "@/components/ui/button";
 import { Reveal } from "@/components/shared/reveal";
 import { siteConfig } from "@/lib/data/site-config";
+import { getResumeMeta } from "@/lib/resume";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -19,10 +20,10 @@ export const metadata: Metadata = {
   },
 };
 
-/** Rendered from the source PDF at build time — see public/images/resume. */
-const PAGES = [1, 2, 3];
-
 export default function ResumePage() {
+  // Compiled from cv/main.tex by CI — see .github/workflows/build-cv.yml.
+  const { pages, builtAt } = getResumeMeta();
+
   return (
     <article className="relative py-28 sm:py-32">
       <div className="mx-auto max-w-4xl px-6">
@@ -85,13 +86,29 @@ export default function ResumePage() {
           </div>
         </Reveal>
 
+        {builtAt && (
+          <Reveal delay={0.12}>
+            <p className="mt-6 text-xs text-muted-foreground">
+              Last updated{" "}
+              <time dateTime={builtAt}>
+                {new Date(builtAt).toLocaleDateString("en-GB", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </time>{" "}
+              · compiled from LaTeX source
+            </p>
+          </Reveal>
+        )}
+
         <div className="mt-14 space-y-6">
-          {PAGES.map((page, idx) => (
-            <Reveal key={page} delay={idx === 0 ? 0.1 : 0}>
+          {pages.map((src, idx) => (
+            <Reveal key={src} delay={idx === 0 ? 0.1 : 0}>
               <figure className="rounded-2xl overflow-hidden border border-white/10 bg-white shadow-2xl shadow-black/40">
                 <Image
-                  src={`/images/resume/page-${page}.jpg`}
-                  alt={`Résumé of ${siteConfig.name}, page ${page} of ${PAGES.length}`}
+                  src={src}
+                  alt={`Résumé of ${siteConfig.name}, page ${idx + 1} of ${pages.length}`}
                   width={1400}
                   height={1812}
                   sizes="(min-width: 896px) 56rem, 100vw"
