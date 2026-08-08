@@ -15,7 +15,7 @@ export const experience: ExperienceEntry[] = [
     period: "Nov 2024 — Apr 2025",
     detail:
       "Built and deployed a Django REST API and business-analytics dashboard for a live client product used for inventory tracking.",
-    href: "https://thestockgo.com",
+    href: "https://www.thestockgo.com/en/",
     stack: ["Django", "REST APIs", "PostgreSQL", "Analytics Dashboard"],
   },
   {
