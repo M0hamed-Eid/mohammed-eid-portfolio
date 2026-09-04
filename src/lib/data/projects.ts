@@ -55,20 +55,21 @@ export const projects: Project[] = [
     role: "Team Lead & Primary Technical Contributor",
     team: "Cross-functional team of five",
     category: "LLM & RAG",
-    status: "In Progress",
+    status: "Ongoing",
     featured: true,
     summary:
-      "A multi-service AI news platform that ingests content from seven sources, enriches it through a five-agent pipeline, and serves personalized, retrieval-grounded recommendations through a custom two-stage recommender.",
+      "A multi-service AI news platform that ingests content from seven sources, enriches it through a five-agent pipeline, and serves personalized, retrieval-grounded recommendations and a RAG chat assistant through a custom two-stage recommender. Grew across ten milestones from a single-user CLI script into a deployed SaaS product with real billing infrastructure.",
     problem:
       "News and technical content volume overwhelms readers. Finding grounded, source-cited answers and a personally relevant feed across live articles, papers, releases, and videos is hard to do well — most aggregators either dump everything unranked or rank on engagement alone.",
     architecture: [
-      "Three independent services sharing one PostgreSQL/pgvector database: a Python/SQLAlchemy pipeline (scraping, enrichment, RAG, ranking), a Django 5.2 backend (users, billing, JSON API, streaming chat), and a Next.js 16 frontend.",
+      "Three independent services sharing one PostgreSQL/pgvector database: a Python/SQLAlchemy pipeline (scraping, enrichment, RAG, ranking), a Django 5.2 backend (users, billing, JSON API, streaming chat), and a Next.js 16 + React 19 frontend that replaced Django's original server-rendered templates in a full rewrite.",
       "Seven scrapers (arXiv, GitHub releases, Hugging Face, YouTube, RSS, blogs via Playwright, Federal Register) feed a unified content pipeline.",
       "A five-agent enrichment layer — assistant/RAG, chunk-summary, email, enrichment, and trend-narrative agents — each responsible for one structured transformation, not a single monolithic LLM call.",
-      "RAG stack: local Sentence-Transformer embeddings, PostgreSQL + pgvector for retrieval, Groq-served LLMs for grounded, cited generation, streamed to the client over SSE.",
+      "RAG stack: local Sentence-Transformer embeddings, PostgreSQL + pgvector (HNSW-indexed passage chunks) for retrieval, and Groq-served LLMs for grounded, cited generation — powering both semantic search and a RAG chat assistant streamed to the client over SSE from a dedicated ASGI process, isolated so a slow stream can't pin the main web workers.",
       "A deterministic two-stage recommender: candidate generation (pgvector similarity + followed entities/topics, with a cold-start fallback) feeding a transparent weighted-scoring stage (interest, quality, freshness, source affinity, novelty) plus MMR diversification and a reserved exploration slice against filter bubbles.",
       "Async infrastructure: Celery + Redis split across three dedicated queues (default, interactive, speech-to-text) so a live search or chat request never queues behind a multi-minute pipeline run, driven by a six-job Celery Beat schedule.",
       "Speech-to-text for caption-less videos via local faster-whisper, so YouTube content is searchable and summarizable even without captions.",
+      "Deployed as a split-host production architecture — a Vercel-hosted frontend and an AWS EC2 backend (Django/Celery) after Oracle Cloud's free-tier ARM capacity proved unavailable — with the production database migrated from Neon to self-hosted Postgres; the EC2 instance is currently stopped to control ongoing compute cost after a successful production run.",
     ],
     techStack: [
       "Python",
@@ -84,6 +85,9 @@ export const projects: Project[] = [
       "Sentence-Transformers",
       "faster-whisper",
       "Docker Compose",
+      "Vercel",
+      "AWS EC2",
+      "Caddy",
       "Alembic",
       "Stripe",
     ],
@@ -106,15 +110,22 @@ export const projects: Project[] = [
         solution:
           "Raised the broker visibility timeout to 6 hours and split Celery into three dedicated queues so long-running batch work never blocks interactive requests like search or chat.",
       },
+      {
+        challenge:
+          "Migrating the production database off Neon hit two separate failures back to back: the local dev machine's network blocked outbound Postgres connections entirely, and a first attempted restore then silently completed with zero rows.",
+        solution:
+          "Routed the migration through a disposable GitHub Actions workflow instead of the local machine, since GitHub-hosted runners have unrestricted outbound network access; traced the empty restore to Neon's pooled connection string (transaction-pooling mode can't support a multi-statement restore) and fixed it by switching to Neon's direct, non-pooled connection string — verified with the same row-count checks used to characterize the original database.",
+      },
     ],
     results: [
-      "Eight feature milestones shipped (infrastructure, instrumentation, content intelligence, the owned recommender, source following, trend insights, deep media, and SaaS hardening)",
+      "Ten feature milestones shipped end to end — from an original single-user CLI script through infrastructure, instrumentation, content intelligence, the owned recommender, source following, trend insights, deep media, SaaS billing, a RAG chat assistant, and a full Next.js 16 frontend rewrite",
       "Five-agent enrichment and RAG pipeline running across seven ingestion sources",
       "Custom offline NDCG@10/MAP evaluation harness with shadow-mode ranking comparison",
-      "Full production-ready, containerized deployment architecture designed — Docker Compose multi-service topology with Caddy-routed TLS across three services on one domain, documented for a $0/month Oracle Cloud or Render deployment",
+      "Deployed to real production infrastructure (Vercel + AWS EC2, self-hosted Postgres) with a verified ~3,567-row embedding index over the live corpus — since paused to control hosting cost after a successful production run",
     ],
     links: {
       github: "https://github.com/M0hamed-Eid/ai-news-aggregator",
+      demo: "https://ai-compass-sandy.vercel.app/",
     },
     images: [
       {
