@@ -84,11 +84,24 @@ export const certifications: Certification[] = [
   {
     name: "AWS Certified Machine Learning Engineer — Associate",
     issuer: "Amazon Web Services (MLA-C01)",
-    period: "In Progress — self-study",
+    period: "Sep 2026",
     detail:
-      "Exam preparation: data ingestion and transformation, SageMaker model development, deployment, and ML operations on AWS.",
-    status: "In Progress",
+      "Data ingestion and transformation, SageMaker model development, deployment, and ML operations on AWS.",
+    status: "Completed",
     tier: "featured",
+    image: "/images/certificates/aws-ml-engineer-associate.jpg",
+    verifyUrl: "https://aws.amazon.com/verification",
+  },
+  {
+    name: "Huawei Certified ICT Associate — AI (HCIA-AI)",
+    issuer: "Huawei",
+    period: "Aug 2026",
+    detail:
+      "AI fundamentals across Huawei's ICT stack: machine learning and deep learning basics, and the Atlas/MindSpore AI development ecosystem.",
+    status: "Completed",
+    tier: "featured",
+    image: "/images/certificates/huawei-hcia-ai.jpg",
+    verifyUrl: "https://e.huawei.com/cn/talent/#/cert/certificate-verification",
   },
   {
     name: "Introduction to Statistics in Python",
