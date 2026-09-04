@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Award, BadgeCheck, ExternalLink, ZoomIn } from "lucide-react";
@@ -17,10 +17,14 @@ function CertCard({
   cert,
   index,
   onOpen,
+  copiedCode,
+  onVerify,
 }: {
   cert: Certification;
   index: number;
   onOpen: (cert: Certification) => void;
+  copiedCode: string | null;
+  onVerify: (cert: Certification, e: MouseEvent<HTMLAnchorElement>) => void;
 }) {
   const hasImage = Boolean(cert.image);
 
@@ -82,10 +86,15 @@ function CertCard({
                 href={cert.verifyUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={(e) => onVerify(cert, e)}
                 className="inline-flex items-center gap-1 text-xs font-medium text-brand-pink hover:text-brand-violet transition-colors shrink-0"
               >
                 <BadgeCheck className="size-3.5" />
-                Verify
+                {copiedCode === cert.name
+                  ? "Code copied!"
+                  : cert.verifyCode
+                    ? "Verify"
+                    : "View"}
               </a>
             )}
           </div>
@@ -97,7 +106,21 @@ function CertCard({
 
 export function Certifications() {
   const [active, setActive] = useState<Certification | null>(null);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const panelRef = useFocusOnOpen<HTMLDivElement>(!!active);
+
+  async function handleVerify(cert: Certification, e: MouseEvent<HTMLAnchorElement>) {
+    if (!cert.verifyCode) return;
+    e.preventDefault();
+    try {
+      await navigator.clipboard.writeText(cert.verifyCode);
+    } catch {
+      // Clipboard blocked (permissions/insecure context) — still open the link below.
+    }
+    setCopiedCode(cert.name);
+    setTimeout(() => setCopiedCode((c) => (c === cert.name ? null : c)), 2000);
+    window.open(cert.verifyUrl, "_blank", "noopener,noreferrer");
+  }
 
   return (
     <section id="certifications" className="relative py-28">
@@ -110,7 +133,14 @@ export function Certifications() {
 
         <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {featured.map((cert, idx) => (
-            <CertCard key={cert.name} cert={cert} index={idx} onOpen={setActive} />
+            <CertCard
+              key={cert.name}
+              cert={cert}
+              index={idx}
+              onOpen={setActive}
+              copiedCode={copiedCode}
+              onVerify={handleVerify}
+            />
           ))}
         </div>
 
@@ -126,7 +156,14 @@ export function Certifications() {
             </Reveal>
             <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {foundation.map((cert, idx) => (
-                <CertCard key={cert.name} cert={cert} index={idx} onOpen={setActive} />
+                <CertCard
+                  key={cert.name}
+                  cert={cert}
+                  index={idx}
+                  onOpen={setActive}
+                  copiedCode={copiedCode}
+                  onVerify={handleVerify}
+                />
               ))}
             </div>
           </>
@@ -168,9 +205,14 @@ export function Certifications() {
                     href={active.verifyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={(e) => handleVerify(active, e)}
                     className="inline-flex items-center gap-1.5 text-xs font-medium text-brand-pink hover:text-brand-violet transition-colors shrink-0"
                   >
-                    Verify credential
+                    {copiedCode === active.name
+                      ? "Code copied!"
+                      : active.verifyCode
+                        ? "Verify credential"
+                        : "View certificate"}
                     <ExternalLink className="size-3.5" />
                   </a>
                 )}

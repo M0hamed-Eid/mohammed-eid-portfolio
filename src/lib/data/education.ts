@@ -24,17 +24,47 @@ export interface Certification {
   image?: string;
   /** Public verification URL for the credential. */
   verifyUrl?: string;
+  /**
+   * Verification code the issuer's site expects pasted into its own field
+   * (AWS/Huawei don't support passing it via the URL). When set, clicking
+   * "Verify" copies this to the clipboard before opening verifyUrl.
+   */
+  verifyCode?: string;
 }
 
 export const certifications: Certification[] = [
   {
     name: "AI & Data Science Diploma",
     issuer: "Digilians — MCIT / Egyptian Military Academy scholarship",
-    period: "Dec 2025 — Sep 2026 (expected)",
+    period: "Dec 2025 — Sep 2026",
     detail:
       "9-month intensive program: Machine Learning, Deep Learning, Computer Vision, NLP, Data Engineering, MLOps, Generative AI and LLMs.",
-    status: "In Progress",
+    status: "Completed",
     tier: "featured",
+  },
+  {
+    name: "AWS Certified Machine Learning Engineer — Associate",
+    issuer: "Amazon Web Services (MLA-C01)",
+    period: "Sep 2026",
+    detail:
+      "Data ingestion and transformation, SageMaker model development, deployment, and ML operations on AWS.",
+    status: "Completed",
+    tier: "featured",
+    image: "/images/certificates/aws-ml-engineer-associate.jpg",
+    verifyUrl: "https://aws.amazon.com/verification",
+    verifyCode: "3fa65dd3c2cd4078bcb796a49a7ee54c",
+  },
+  {
+    name: "Huawei Certified ICT Associate — AI (HCIA-AI)",
+    issuer: "Huawei",
+    period: "Aug 2026",
+    detail:
+      "AI fundamentals across Huawei's ICT stack: machine learning and deep learning basics, and the Atlas/MindSpore AI development ecosystem.",
+    status: "Completed",
+    tier: "featured",
+    image: "/images/certificates/huawei-hcia-ai.jpg",
+    verifyUrl: "https://e.huawei.com/en/talent/#/cert/certificate-verification",
+    verifyCode: "010102001855810447093119310",
   },
   {
     name: "IBM AI Engineering Professional Certificate",
@@ -80,28 +110,8 @@ export const certifications: Certification[] = [
     status: "Completed",
     tier: "featured",
     image: "/images/certificates/depi-microsoft-data-engineer.jpg",
-  },
-  {
-    name: "AWS Certified Machine Learning Engineer — Associate",
-    issuer: "Amazon Web Services (MLA-C01)",
-    period: "Sep 2026",
-    detail:
-      "Data ingestion and transformation, SageMaker model development, deployment, and ML operations on AWS.",
-    status: "Completed",
-    tier: "featured",
-    image: "/images/certificates/aws-ml-engineer-associate.jpg",
-    verifyUrl: "https://aws.amazon.com/verification",
-  },
-  {
-    name: "Huawei Certified ICT Associate — AI (HCIA-AI)",
-    issuer: "Huawei",
-    period: "Aug 2026",
-    detail:
-      "AI fundamentals across Huawei's ICT stack: machine learning and deep learning basics, and the Atlas/MindSpore AI development ecosystem.",
-    status: "Completed",
-    tier: "featured",
-    image: "/images/certificates/huawei-hcia-ai.jpg",
-    verifyUrl: "https://e.huawei.com/cn/talent/#/cert/certificate-verification",
+    verifyUrl:
+      "https://drive.google.com/file/d/1VoZyLtliZHhE32vgXVa9a-ozB-IVbwj3/view?usp=sharing",
   },
   {
     name: "Introduction to Statistics in Python",

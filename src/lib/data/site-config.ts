@@ -8,7 +8,7 @@ export const siteConfig = {
   tagline:
     "Building intelligent systems at the intersection of engineering discipline and modern AI — from multi-agent RAG platforms to production ML pipelines.",
   summary:
-    "AI/ML Engineer in the final stage of a 9-month AI & Data Science diploma, with hands-on experience designing and shipping full-stack AI systems end to end: a multi-agent RAG platform with a custom recommendation engine, and an Arabic NLP knowledge-graph and retrieval pipeline. Comfortable across the ML lifecycle — data ingestion, feature engineering, model evaluation, and deployment design — backed by a software engineering foundation in Python, Django, REST APIs, and PostgreSQL that translates directly into shipping working AI systems, not just notebooks.",
+    "AI/ML Engineer who recently completed a 9-month AI & Data Science diploma, with hands-on experience designing and shipping full-stack AI systems end to end: a multi-agent RAG platform with a custom recommendation engine, and an Arabic NLP knowledge-graph and retrieval pipeline. Comfortable across the ML lifecycle — data ingestion, feature engineering, model evaluation, and deployment design — backed by a software engineering foundation in Python, Django, REST APIs, and PostgreSQL that translates directly into shipping working AI systems, not just notebooks.",
   availability: "Open to AI/ML Engineer & Data Scientist roles",
   links: {
     github: "https://github.com/M0hamed-Eid",
