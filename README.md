@@ -29,6 +29,7 @@ The local verification script never sends an email.
 - `src/lib/data/projects.ts`: case studies, ownership, scoped homepage outcomes,
   deployment notes and evaluation limitations. Update these together.
 - `skills.ts`, `experience.ts`, `education.ts`: skills, work, degree and credentials.
+- `publications.ts`: the ArabicNLP 2026 paper citation, authors and published results.
 - `adas.ts`, `diagrams.ts`: detailed system content and architecture stages.
 - `public/images/`: portrait, certificates, project visuals and CV previews.
 - `cv/main.tex`: résumé source; the existing CV workflow compiles the PDF and
@@ -80,3 +81,8 @@ normalized by the trusted proxy.
 
 See [the audit](docs/portfolio-audit.md) for the initial score, issue register,
 priorities, missing evidence and verification limitations.
+
+The original animated UI is retained. Sprints is listed as an AI internship
+(4 October–15 November 2026) focused on proxy mode and multi-format RAG ingestion; its
+private repository URL is intentionally omitted. The CV is limited to two pages
+and the CV workflow enforces that limit before updating the public PDF/previews.

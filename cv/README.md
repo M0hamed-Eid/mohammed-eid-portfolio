@@ -19,9 +19,9 @@ cv/main.tex                                  ← you edit this
 live site — Download CV + /resume both current
 ```
 
-Nothing in `src/` refers to a page count or a version number, so a CV that grows
-or loses a page needs no code change. `src/lib/resume.ts` reads whatever the
-build produced.
+The CV must stay within two pages. CI checks the compiled page count before
+publishing build output. `src/lib/resume.ts` discovers the rendered preview
+pages automatically.
 
 ## Keeping Overleaf in sync
 

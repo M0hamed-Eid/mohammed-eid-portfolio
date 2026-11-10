@@ -10,6 +10,13 @@ export interface ExperienceEntry {
 
 export const experience: ExperienceEntry[] = [
   {
+    role: "AI Intern",
+    company: "Sprints",
+    period: "4 Oct — 15 Nov 2026",
+    detail: "Worked on SprintFlow’s Digital Twin proxy mode and multi-format data ingestion for RAG: file uploads, parsing and chunking, embedding/indexing, and retrieval with source citations.",
+    stack: ["Python", "FastAPI", "LangGraph", "PostgreSQL", "Qdrant", "Mattermost"],
+  },
+  {
     role: "Freelance Backend Developer",
     company: "StockGo (Qatar)",
     period: "Nov 2024 — Apr 2025",

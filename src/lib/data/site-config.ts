@@ -10,7 +10,7 @@ export const siteConfig = {
   description:
     "AI/ML engineer in Alexandria, Egypt. Explore multi-agent RAG, Arabic NLP, multimodal AI, and Python backend projects with architecture and evaluation results.",
   summary:
-    "I’m an AI/ML engineer based in Alexandria, Egypt, with a background in Python backend development. My work includes a multi-agent RAG and recommendation platform, an Arabic knowledge-graph and retrieval pipeline, and a spoken visual question-answering system. I focus on data quality, evaluation, and the APIs and background services that connect models to applications. I completed the nine-month Digilians AI & Data Science diploma in September 2026.",
+    "I’m an AI/ML engineer based in Alexandria, Egypt, with Python backend experience and internship contributions to Sprints’ AI digital twin. My work spans document ingestion and cited retrieval, multi-agent RAG applications, Arabic NLP, and machine learning. I co-authored an ArabicNLP 2026 shared-task paper on spoken visual question answering and completed the nine-month Digilians AI & Data Science diploma in September 2026.",
   availability: "Open to AI, ML, Generative AI & Data Science roles",
   links: {
     github: "https://github.com/M0hamed-Eid",

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 import { Download, Menu } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -16,10 +17,10 @@ import { cn } from "@/lib/utils";
 
 /** `id` is the section anchor on the home page; `route` items are standalone pages. */
 const NAV_LINKS = [
-  { id: "projects", label: "Projects" },
-  { id: "experience", label: "Experience" },
   { id: "about", label: "About" },
   { id: "skills", label: "Skills" },
+  { id: "projects", label: "Projects" },
+  { id: "experience", label: "Experience" },
   { id: "certifications", label: "Certifications" },
   { id: "contact", label: "Contact" },
 ];
@@ -68,16 +69,19 @@ export function Navbar() {
   const anchorHref = (id: string) => (isHome ? `#${id}` : `/#${id}`);
 
   return (
-    <header
+    <motion.header
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
       className={cn(
-        "fixed top-0 inset-x-0 z-50 bg-background/95 backdrop-blur-md transition-all duration-300",
+        "fixed top-0 inset-x-0 z-50 transition-all duration-300",
         scrolled ? "py-2" : "py-4"
       )}
     >
       <div
         className={cn(
-          "mx-auto flex w-full max-w-6xl items-center justify-between rounded-2xl px-4 sm:px-6 transition-all duration-300",
-          scrolled ? "glass py-2 shadow-lg shadow-black/20" : "py-1"
+          "mx-auto flex max-w-6xl items-center justify-between rounded-2xl px-4 sm:px-6 transition-all duration-300",
+          scrolled ? "glass py-2 shadow-lg shadow-black/20 mx-4" : "py-1"
         )}
       >
         <Link
@@ -88,14 +92,14 @@ export function Navbar() {
           M<span className="text-gradient-brand">.</span>
         </Link>
 
-        <nav aria-label="Primary" className="hidden lg:flex items-center gap-1">
+        <nav aria-label="Primary" className="hidden md:flex items-center gap-1">
           {NAV_LINKS.map((link) => {
             const isActive = isHome && activeSection === link.id;
             return (
               <a
                 key={link.id}
                 href={anchorHref(link.id)}
-                aria-current={isActive ? "location" : undefined}
+                aria-current={isActive ? "true" : undefined}
                 className={cn(
                   "relative px-3.5 py-2 text-sm rounded-full transition-colors hover:bg-white/5",
                   isActive
@@ -105,7 +109,9 @@ export function Navbar() {
               >
                 {link.label}
                 {isActive && (
-                  <span
+                  <motion.span
+                    layoutId="nav-active"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     className="absolute inset-x-3 -bottom-0.5 h-px bg-gradient-to-r from-brand-violet via-brand-pink to-brand-orange"
                   />
                 )}
@@ -134,7 +140,7 @@ export function Navbar() {
           download
           className={cn(
             buttonVariants({ size: "sm" }),
-            "hidden lg:inline-flex rounded-full gap-2"
+            "hidden md:inline-flex rounded-full gap-2"
           )}
         >
           <Download className="size-3.5" />
@@ -145,13 +151,13 @@ export function Navbar() {
           <SheetTrigger
             className={cn(
               buttonVariants({ variant: "ghost", size: "icon" }),
-              "lg:hidden rounded-full"
+              "md:hidden rounded-full"
             )}
             aria-label="Open menu"
           >
             <Menu className="size-5" />
           </SheetTrigger>
-          <SheetContent side="right" className="border-l w-72 overflow-y-auto bg-popover">
+          <SheetContent side="right" className="glass border-l w-72">
             <SheetTitle className="font-display text-2xl px-4 pt-4">
               Mohammed<span className="text-gradient-brand">.</span>
             </SheetTitle>
@@ -195,6 +201,6 @@ export function Navbar() {
           </SheetContent>
         </Sheet>
       </div>
-    </header>
+    </motion.header>
   );
 }

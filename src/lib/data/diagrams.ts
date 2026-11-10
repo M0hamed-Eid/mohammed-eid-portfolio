@@ -5,6 +5,13 @@ export interface DiagramStage {
 }
 
 export const diagrams: Record<string, DiagramStage[]> = {
+  "sprints-twin": [
+    { label: "Workspace & Files", detail: "Mattermost and multi-format uploads", icon: "FileText" },
+    { label: "Parse & Index", detail: "Chunking, embeddings, Qdrant", icon: "Layers" },
+    { label: "Access-Aware Retrieval", detail: "PostgreSQL ownership checks", icon: "ShieldCheck" },
+    { label: "Digital Twin", detail: "FastAPI + LangGraph orchestration", icon: "Bot" },
+    { label: "Grounded Answer", detail: "Cited answers and scoped proxy replies", icon: "MessageSquare" },
+  ],
   "ai-compass": [
     { label: "7 Scrapers", detail: "arXiv, GitHub, HF, YouTube, RSS, Blogs", icon: "Radar" },
     { label: "5-Agent Pipeline", detail: "Enrichment, RAG, Trends, Email", icon: "Bot" },

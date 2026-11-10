@@ -23,7 +23,7 @@ export interface Project {
     | "Machine Learning"
     | "Computer Vision"
     | "Autonomous Systems";
-  status: "Live" | "In Progress" | "Completed" | "Ongoing";
+  status: "Live" | "In Progress" | "Completed" | "Ongoing" | "Internship Project";
   featured: boolean;
   summary: string;
   /** Short, scoped evidence used on the homepage and case-study header. */
@@ -41,9 +41,10 @@ export interface Project {
     githubPending?: boolean;
     demo?: string;
     dataset?: string;
+    paper?: string;
   };
   images: ProjectImage[];
-  diagram: "ai-compass" | "palestinian-kg" | "aynvqa" | "fitness-tracker" | "adas";
+  diagram: "ai-compass" | "palestinian-kg" | "aynvqa" | "fitness-tracker" | "adas" | "sprints-twin";
   /**
    * Projects with a bespoke page (rather than the generic /projects/[slug]
    * template) point at it here.
@@ -52,6 +53,44 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  {
+    slug: "sprints-digital-twin",
+    title: "SprintFlow — Digital Twin",
+    subtitle: "Sprints Internship · AI Workspace & Document Retrieval",
+    period: "4 Oct — 15 Nov 2026",
+    role: "AI Intern — proxy mode & RAG data ingestion",
+    team: "Sprints engineering team",
+    category: "LLM & RAG",
+    status: "Internship Project",
+    featured: true,
+    summary: "Worked on the Digital Twin proxy mode and multi-format RAG data ingestion in SprintFlow, a Mattermost-based AI workspace. Built file upload, parsing, chunking, embedding/indexing, and cited document-retrieval workflows with FastAPI and LangGraph.",
+    outcome: "Proxy mode + file-to-RAG ingestion",
+    outcomeContext: "AI internship focused on delegated replies and document ingestion for grounded, access-aware retrieval.",
+    problem: "An AI workspace assistant needs to use uploaded documents and connected files without mixing users’ private knowledge or treating temporary preferences as permanent memory.",
+    architecture: [
+      "Mattermost provides the workspace UI; FastAPI and LangGraph coordinate the digital twin and its specialists.",
+      "PDF, DOCX, plain-text and Markdown documents are parsed, chunked, embedded, and indexed for retrieval. PostgreSQL holds canonical records and access metadata; Qdrant provides semantic search.",
+      "Retrieved document passages are checked against the requester’s access before being used in cited answers.",
+      "Proxy mode supports responding on behalf of the owner in selected conversations, with explicit owner controls and scoped knowledge access.",
+
+    ],
+    techStack: ["Python", "FastAPI", "LangGraph", "PostgreSQL", "Qdrant", "SQLModel", "Mattermost", "Docker"],
+    challenges: [
+      { challenge: "Make uploaded files usable as grounded context.", solution: "Contributed document storage, multipart upload, parsing/chunking, embedding/indexing, and multi-file retrieval with source citations." },
+      { challenge: "Keep retrieval and memory scoped to the correct user.", solution: "Contributed access-aware retrieval, knowledge-visibility integration, correction workflows, and a fix preventing temporary preferences from being saved." },
+      { challenge: "Support delegated replies without leaking private context.", solution: "Worked on the Digital Twin proxy workflow, keeping replies in their conversation threads and auditing the knowledge used to support them." },
+    ],
+    results: [
+      "Implemented document ingestion from upload through parsing, chunking, embedding, and indexing",
+      "Added authorized document-passage retrieval with source citations and multi-file knowledge uploads",
+      "Worked on owner-controlled proxy replies and the knowledge used to ground them",
+      "Repository remains private; no customer, usage, latency, or production-quality metrics are claimed",
+    ],
+    links: { githubPending: true },
+    images: [],
+    diagram: "sprints-twin",
+  },
+
   {
     slug: "ai-compass",
     title: "AI Compass",
@@ -239,17 +278,17 @@ export const projects: Project[] = [
     slug: "aynvqa-msa",
     title: "AynVQA-MSA",
     subtitle: "Multimodal Arabic Spoken Visual Question Answering",
-    period: "Jul — Aug 2026",
-    role: "Individual Contributor — full pipeline implementation",
-    team: "ImageEval 2026 / ArabicNLP shared task participation",
+    period: "Jul — Oct 2026",
+    role: "Pipeline implementation & paper co-author",
+    team: "Digilians team · ImageEval 2026 / ArabicNLP shared task",
     category: "Multimodal AI",
-    status: "In Progress",
+    status: "Completed",
     featured: true,
     summary:
       "An end-to-end multimodal pipeline — audio, vision, and language — for the ImageEval 2026 / ArabicNLP shared task: given a spoken Arabic question about an image, transcribe it, recover its three options, and select the correct answer.",
-    outcome: "79.00% development accuracy",
-    outcomeContext: "395/500 correct; up from 374/500 before repair escalation.",
-    evaluationNote: "Measured on the official 500-example development split. This is not a held-out test result or a claim of leaderboard placement.",
+    outcome: "65.6% blind-test accuracy · published paper",
+    outcomeContext: "1,000 human-recorded test examples; 79.0% on the 500-example development split.",
+    evaluationNote: "The published frozen configuration scored 65.6% accuracy, 57.4% balanced accuracy, and 50.4% macro F1 on the 1,000-example blind test, compared with 79.0% on 500 development examples. The paper reports a synthetic-to-human recording shift and a caching reproducibility issue. Most of the development improvement came from changing the answer-selection model, not repair alone.",
     problem:
       "Spoken visual question answering in Modern Standard Arabic compounds three hard problems into one: the question and its three multiple-choice options exist only as speech (no text channel), MSA transcription is meaningfully harder than English in this dataset (the official baseline scores 39.8% on MSA vs. 66.4% on English for the same task design), and the organizers' own reference parser is fragile — a bare regex that silently falls back to index 0 on any parse failure.",
     architecture: [
@@ -290,13 +329,15 @@ export const projects: Project[] = [
       },
     ],
     results: [
-      "79.00% accuracy (395/500) on the official development-split evaluation",
-      "Up from a 74.80% (374/500) M4 baseline after the repair-escalation stage",
+      "65.6% accuracy, 57.4% balanced accuracy, and 50.4% macro F1 on the 1,000-example blind final test",
+      "79.0% accuracy (395/500) on the 500-example official development split",
+      "Published in the ArabicNLP 2026 Shared Tasks proceedings (ACL Anthology), pages 766–770",
       "Nearly double the organizers' own baseline (39.8% on the MSA track)",
       "Full ASR → parse → repair → select cascade built with independent, resumable caching at every stage",
     ],
     links: {
       github: "https://github.com/M0hamed-Eid/ayn-vqa-msa",
+      paper: "https://aclanthology.org/2026.arabicnlp-sharedtasks.96/",
     },
     images: [
       {
@@ -449,7 +490,7 @@ export const projects: Project[] = [
       },
     ],
     results: [
-      "Grade A+ — ranked 5th of approximately 60 graduation projects in the Value competition",
+      "Grade A+ — ranked 5th of approximately 60 graduation projects in the Valeo competition",
       "Mentored by Valeo, sponsored by ITIDA's Egypt Makes Electronics (EME) programme",
       "Roughly 800 KB of hand-written C across five repositories, with zero vendor HAL dependencies",
       "Six driving features shipped end to end, from ultrasonic echo through to motor and servo actuation",

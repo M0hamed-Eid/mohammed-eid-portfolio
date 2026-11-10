@@ -25,12 +25,12 @@ export function ImageLightboxGallery({ images }: { images: ProjectImage[] }) {
               src={img.src}
               alt={img.alt}
               fill
-              sizes="(min-width: 896px) 26rem, (min-width: 640px) 50vw, 100vw"
-              className="object-contain group-hover:scale-105 transition-transform duration-500"
+              sizes="(min-width: 640px) 50vw, 100vw"
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             {img.caption && (
-              <span className="absolute bottom-2 left-3 text-xs text-white/90 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity">
+              <span className="absolute bottom-2 left-3 text-xs text-white/90 opacity-0 group-hover:opacity-100 transition-opacity">
                 {img.caption}
               </span>
             )}
@@ -39,7 +39,7 @@ export function ImageLightboxGallery({ images }: { images: ProjectImage[] }) {
       </div>
 
       <Dialog open={!!active} onOpenChange={(open) => !open && setActive(null)}>
-        <DialogContent className="w-[calc(100%-2rem)] max-w-4xl sm:max-w-4xl max-h-[90dvh] overflow-y-auto bg-popover border-none shadow-none p-0">
+        <DialogContent className="max-w-4xl bg-transparent border-none shadow-none p-0">
           <DialogTitle className="sr-only">{active?.alt}</DialogTitle>
           {active && (
             <div

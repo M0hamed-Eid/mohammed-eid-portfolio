@@ -1,3 +1,10 @@
+> Update after owner review: the original UI, animated hero, counters, particles,
+> splash, section order and reveal animations have been restored at the owner’s
+> request. The redesign implementation notes below describe the earlier iteration,
+> not the current visual design. Security/API fixes remain. Sprints internship,
+> Digital Twin case study, published AynVQA paper and two-page CV are now being
+> added; see `portfolio-update.md` for the current change record.
+
 # Portfolio audit — 10 November 2026
 
 ## Scope and scoring

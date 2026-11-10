@@ -39,6 +39,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends poppler-utils qpdf
 
+      - name: Enforce the two-page CV limit
+        run: |
+          pages=$(pdfinfo cv/main.pdf | awk '/^Pages:/{print $2}')
+          if [ -z "$pages" ] || [ "$pages" -lt 1 ] || [ "$pages" -gt 2 ]; then
+            echo "CV must contain one or two pages; found: $pages"
+            exit 1
+          fi
+
       - name: Optimise the PDF for web delivery
         run: |
           # Linearise ("fast web view") so browsers can render page 1 before the

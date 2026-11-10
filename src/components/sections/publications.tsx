@@ -1,7 +1,11 @@
-import { ArrowUpRight, Database } from "lucide-react";
+"use client";
+
+import { motion } from "framer-motion";
+import { ArrowUpRight, Database, BookOpen } from "lucide-react";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
 import { BrandIcon, type BrandName } from "@/components/shared/brand-icon";
+import { aynPublication } from "@/lib/data/publications";
 import { siteConfig } from "@/lib/data/site-config";
 
 const PROFILES: {
@@ -14,7 +18,7 @@ const PROFILES: {
   {
     name: "GitHub",
     handle: "M0hamed-Eid",
-    description: "Project repositories and ongoing experiments.",
+    description: "Public project repositories and ongoing experiments.",
     href: siteConfig.links.github,
     icon: "github",
   },
@@ -36,21 +40,35 @@ const PROFILES: {
 
 export function Publications() {
   return (
-    <section id="publications" className="relative py-16 sm:py-20">
+    <section id="publications" className="relative py-28">
       <div className="mx-auto max-w-6xl px-6">
         <SectionHeading
-          eyebrow="Code & datasets"
-          title="Explore the source."
-          description="Project code, dataset documentation, and ML notebooks."
+          eyebrow="Publications & Open Source"
+          title="Work you can go verify."
+          description="A published shared-task paper, project code, and published data."
         />
+
+        <Reveal className="mt-12">
+          <article className="glass rounded-3xl p-6 sm:p-8">
+            <p className="flex items-center gap-2 text-xs font-medium text-brand-pink"><BookOpen className="size-4" />{aynPublication.venue} · {aynPublication.date}</p>
+            <h3 className="mt-4 text-xl font-semibold leading-snug"><a href={aynPublication.url} target="_blank" rel="noopener noreferrer" className="hover:text-brand-pink transition-colors">{aynPublication.title}</a></h3>
+            <p className="mt-3 text-sm text-muted-foreground">{aynPublication.authors}</p>
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{aynPublication.summary}</p>
+            <div className="mt-5 flex flex-wrap gap-5 text-sm font-medium">
+              <a href={aynPublication.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-brand-pink">Read on ACL Anthology <ArrowUpRight className="size-4" /></a>
+              <a href={aynPublication.pdf} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground">Paper PDF</a>
+            </div>
+          </article>
+        </Reveal>
 
         <div className="mt-12 grid sm:grid-cols-3 gap-5">
           {PROFILES.map((profile, idx) => (
             <Reveal key={profile.name} delay={idx * 0.08}>
-              <a
+              <motion.a
                 href={profile.href}
                 target="_blank"
                 rel="noopener noreferrer"
+                whileHover={{ y: -4 }}
                 className="group block h-full rounded-2xl border border-white/10 bg-white/[0.02] p-6 hover:border-brand-violet/30 transition-colors"
               >
                 <div className="flex items-center justify-between">
@@ -64,7 +82,7 @@ export function Publications() {
                 <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
                   {profile.description}
                 </p>
-              </a>
+              </motion.a>
             </Reveal>
           ))}
         </div>
@@ -81,11 +99,11 @@ export function Publications() {
             </div>
             <div className="flex-1">
               <h3 className="font-semibold">
-                Palestinian Cultural Knowledge Corpus
+                palestinian-kg/palestinian-cultural-knowledge
               </h3>
               <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
                 A published bilingual (Arabic/English) dataset — 882 documents, ~890K
-                words — from the Palestinian Cultural Knowledge Platform. The dataset card is public; file access requires accepting its access conditions.
+                words — from the Palestinian Cultural Knowledge Platform.
               </p>
             </div>
             <ArrowUpRight className="size-5 text-muted-foreground group-hover:text-brand-pink transition-colors shrink-0" />

@@ -4,7 +4,9 @@ import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { ParticleBackground } from "@/components/layout/particle-background";
 import { ScrollProgress } from "@/components/layout/scroll-progress";
+import { LoadingScreen, SessionVisitScript } from "@/components/layout/loading-screen";
 import { StructuredData } from "@/components/shared/structured-data";
 import { siteConfig } from "@/lib/data/site-config";
 
@@ -71,9 +73,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      // `SessionVisitScript` adds a `session-visited` class to the document element
+      // before hydration, so the server and client class lists legitimately differ.
+      suppressHydrationWarning
       className={`dark ${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground overflow-x-hidden">
+        <SessionVisitScript />
         <StructuredData />
         <a
           href="#main-content"
@@ -82,6 +88,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <TooltipProvider delay={150}>
+          <LoadingScreen />
+          <ParticleBackground />
           <ScrollProgress />
           <Navbar />
           <main id="main-content" className="flex-1">

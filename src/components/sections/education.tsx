@@ -6,7 +6,7 @@ import { education } from "@/lib/data/education";
 
 export function Education() {
   return (
-    <section id="education" className="relative py-16 sm:py-20">
+    <section id="education" className="relative py-28">
       <div className="mx-auto max-w-6xl px-6">
         <SectionHeading eyebrow="Education" title="Foundations." />
 
@@ -54,7 +54,7 @@ export function Education() {
                   </p>
                   <div className="flex items-center gap-1.5 mt-3 text-xs text-brand-pink font-medium">
                     <Trophy className="size-3.5" />
-                    Ranked 5th of ~60 graduation projects — Value competition
+                    Ranked 5th of ~60 graduation projects — Valeo competition
                   </div>
                   <Link
                     href={education.gradProject.href}

@@ -8,7 +8,7 @@
 %  Compiles with pdfLaTeX.
 %==============================================================================
 
-\documentclass[12pt, letterpaper]{article}
+\documentclass[11pt, letterpaper]{article}
 
 % Packages:
 \usepackage[
@@ -168,147 +168,131 @@
 
 \vspace{0.2 cm}
 
-% ─── SUMMARY ───────────────────────────────────────────────────────────────────
+% Summary and experience lead with current AI engineering work.
 \section{Summary}
 \begin{onecolentry}
-Early-career AI/ML Engineer who builds end-to-end systems, from retrieval-augmented platforms and Arabic NLP pipelines to multimodal models, on a software engineering foundation in Python, Django, FastAPI and PostgreSQL. Comfortable across the ML lifecycle: data ingestion, feature engineering, evaluation and deployment. Recently completed a 9-month AI \& Data Science diploma on an MCIT scholarship.
+AI/ML engineer with Python backend experience and internship contributions to Sprints' AI digital twin. Builds document-retrieval systems, LLM applications and Arabic NLP pipelines. Co-author of an ArabicNLP 2026 shared-task paper; completed the Digilians AI \& Data Science diploma in September 2026.
 \end{onecolentry}
 
-% ─── PROJECTS ──────────────────────────────────────────────────────────────────
+\section{Experience}
+\begin{twocolentry}{4 Oct -- 15 Nov 2026}
+\textbf{AI Intern} $|$ Sprints
+\end{twocolentry}
+\begin{onecolentry}
+\begin{highlights}
+\item Worked on SprintFlow's Digital Twin proxy mode and multi-format data ingestion for RAG using FastAPI, LangGraph, PostgreSQL and Qdrant.
+\item Built file uploads, parsing, chunking, embedding/indexing and cited retrieval; contributed owner-controlled proxy replies and the knowledge used to ground them.
+\end{highlights}
+\end{onecolentry}
+
+\vspace{0.08cm}
+\begin{twocolentry}{Nov 2024 -- Apr 2025}
+\textbf{Freelance Backend Developer} $|$ StockGo (Qatar)
+\end{twocolentry}
+\begin{onecolentry}\begin{highlights}
+\item Built and deployed a Django REST API and PostgreSQL-backed analytics dashboard for a live inventory-tracking product.
+\end{highlights}\end{onecolentry}
+
+\vspace{0.08cm}
+\begin{twocolentry}{Mar -- Apr 2025}
+\textbf{Full Stack Developer Intern} $|$ NfrtiX
+\end{twocolentry}
+\begin{onecolentry}\begin{highlights}
+\item Built an internal Django/JavaScript application to support operational workflows.
+\end{highlights}\end{onecolentry}
+
+\vspace{0.08cm}
+\begin{twocolentry}{Oct 2024 -- Feb 2025}
+\textbf{Backend Developer Intern} $|$ Venture Appital
+\end{twocolentry}
+\begin{onecolentry}\begin{highlights}
+\item Developed modular Flask REST microservices and unit tests.
+\end{highlights}\end{onecolentry}
+
 \section{Selected Projects}
+\begin{onecolentry}
+\textbf{\href{https://mohammed-eid-portfolio.vercel.app/projects/sprints-digital-twin}{SprintFlow -- Digital Twin}} $|$ Sprints Internship Project
+\begin{highlights}
+\item AI workspace with proxy replies and a file-to-answer RAG pipeline combining semantic search with PostgreSQL ownership checks. My contributions focused on proxy mode and data ingestion; source repository is private.
+\end{highlights}
+\end{onecolentry}
 
+\vspace{0.1cm}
 \begin{twocolentry}{May 2026 -- Present}
-    \textbf{\href{https://mohammed-eid-portfolio.vercel.app/projects/ai-compass}{AI Compass}} $|$ Multi-Agent AI News \& Recommendation Platform
+\textbf{\href{https://mohammed-eid-portfolio.vercel.app/projects/ai-compass}{AI Compass}} $|$ Multi-Agent RAG \& Recommendations
 \end{twocolentry}
-\begin{onecolentry}
-    \begin{highlights}
-        \item Led a team of five as team lead and main developer on an AI news platform that pulls content from 7 sources, enriches it through a 5-agent pipeline, and recommends what each reader should see next.
-        \item Built the recommendation engine (pgvector similarity search, weighted scoring and MMR diversification) and measured it with an offline NDCG@10 / MAP harness rather than guessing at quality.
-        \item Designed the semantic search and RAG chat assistant on local Sentence-Transformer embeddings, PostgreSQL/pgvector and Groq-served LLMs, with Celery and Redis running background work across three queues; deployed the stack to production on Vercel and AWS EC2 with self-hosted Postgres.
-    \end{highlights}
-\end{onecolentry}
+\begin{onecolentry}\begin{highlights}
+\item Led a team of five on an AI news platform with seven ingestion sources, five enrichment agents, semantic search and a streaming RAG assistant.
+\item Built pgvector candidate retrieval, weighted ranking and MMR diversification with an offline NDCG@10/MAP evaluation harness; integrated Django, Celery/Redis and Groq-served LLMs.
+\item Deployed on Vercel and AWS EC2 with PostgreSQL; backend subsequently paused to control hosting costs.
+\end{highlights}\end{onecolentry}
 
-\vspace{0.16 cm}
-
+\vspace{0.1cm}
 \begin{twocolentry}{Jun -- Aug 2026}
-    \textbf{\href{https://mohammed-eid-portfolio.vercel.app/projects/palestinian-cultural-knowledge-platform}{Palestinian Cultural Knowledge Platform}} $|$ Arabic NLP, RAG \& Knowledge Graph
+\textbf{\href{https://mohammed-eid-portfolio.vercel.app/projects/palestinian-cultural-knowledge-platform}{Palestinian Cultural Knowledge Platform}} $|$ Arabic NLP \& RAG
 \end{twocolentry}
-\begin{onecolentry}
-    \begin{highlights}
-        \item Built a platform with one teammate that turns a quality-scored, deduplicated Arabic/English corpus on Palestinian culture into searchable knowledge; I owned the ingestion pipeline, Arabic NLP, retrieval and the knowledge graph.
-        \item Arabic named-entity recognition with CAMeL Tools reached F1 0.47, and the RAG retriever reached Recall@5 0.93 across 1,282 indexed passages.
-        \item Published the corpus (882 documents, roughly 890K words) as an open bilingual dataset on Hugging Face, and built a knowledge graph of 13,063 entities linked against Wikidata.
-    \end{highlights}
-\end{onecolentry}
+\begin{onecolentry}\begin{highlights}
+\item Owned ingestion, Arabic NLP, retrieval and knowledge-graph work on a two-person project. Published a bilingual corpus of 882 documents (about 890K words) on Hugging Face with gated file access.
+\item Built CAMeL Tools NER (F1 0.47), a retriever (Recall@5 0.93 across 1,282 passages), and a graph of 13,063 canonicalized entities; evaluation figures are project-specific.
+\end{highlights}\end{onecolentry}
 
-\vspace{0.16 cm}
-
-\begin{twocolentry}{Jul -- Aug 2026}
-    \textbf{\href{https://mohammed-eid-portfolio.vercel.app/projects/aynvqa-msa}{AynVQA-MSA}} $|$ Arabic Spoken Visual Question Answering
+\newpage
+\section{Selected Projects (continued)}
+\begin{twocolentry}{Jul -- Oct 2026}
+\textbf{\href{https://mohammed-eid-portfolio.vercel.app/projects/aynvqa-msa}{AynVQA-MSA}} $|$ Arabic Spoken Visual Question Answering
 \end{twocolentry}
-\begin{onecolentry}
-    \begin{highlights}
-        \item Built a pipeline for the ImageEval 2026 / ArabicNLP shared task that hears a spoken Arabic question about an image, recovers its three answer options, and picks the right one: Whisper transcription, schema-constrained parsing, a repair step for bad transcripts, then a vision-language model.
-        \item Scored \textbf{79.00\% accuracy (395/500)} on the official development split, against the organizers' 39.8\% baseline, after the repair step lifted an earlier 74.80\% result.
-        \item Replaced the baseline's regex answer parsing with JSON-schema-constrained decoding, and tested chain-of-thought and few-shot prompting before deciding the gains didn't justify shipping either.
-    \end{highlights}
-\end{onecolentry}
+\begin{onecolentry}\begin{highlights}
+\item Implemented a modular Whisper ASR, schema-constrained parsing, conditional repair and joint vision-language answer-selection pipeline for the ImageEval 2026 MSA shared task.
+\item Published frozen-system results: \textbf{65.6\% accuracy on 1,000 blind-test examples} (57.4\% balanced accuracy; 50.4\% macro F1), versus 79.0\% on 500 development examples.
+\item Co-authored the shared-task paper analyzing the synthetic-to-human recording shift and a caching reproducibility issue; most development improvement came from the answer-selection model change.
+\end{highlights}\end{onecolentry}
 
-\vspace{0.16 cm}
-
+\vspace{0.1cm}
 \begin{twocolentry}{Mar -- Apr 2026}
-    \textbf{\href{https://mohammed-eid-portfolio.vercel.app/projects/fitness-activity-tracker}{Fitness Activity Tracker}} $|$ ML-Powered Exercise Classification
+\textbf{\href{https://mohammed-eid-portfolio.vercel.app/projects/fitness-activity-tracker}{Fitness Activity Tracker}} $|$ Sensor-Based Machine Learning
 \end{twocolentry}
+\begin{onecolentry}\begin{highlights}
+\item Preprocessed wearable sensor data, engineered PCA/FFT features, compared five classifiers across five feature sets, and implemented independent repetition counting on a three-person team.
+\end{highlights}\end{onecolentry}
+
+\section{Publication}
 \begin{onecolentry}
-    \begin{highlights}
-        \item Classified barbell exercises and counted repetitions from wrist-worn accelerometer and gyroscope data; handled preprocessing, feature engineering (Chauvenet outlier removal, PCA, FFT features) and evaluation on a 3-person team.
-        \item Compared 5 classifiers across 5 feature sets with grid search; Random Forest reached roughly 99\% accuracy on held-out test data.
-    \end{highlights}
+\textbf{\href{https://aclanthology.org/2026.arabicnlp-sharedtasks.96/}{Digilians at ImageEval 2026 Shared Tasks: Modular Speech Parsing and Joint Multimodal Reasoning for Arabic Spoken VQA}}
+
+Ahmed Eid Hassan, Nour Eldeen Hossam, Ahmed Hossam Rashad, Abdelrhman Mahmoud Fawzy, \textbf{Mohammed Eid Abdelmeguid}, Mohamed Hamdy Mohamed.
+\textit{ArabicNLP 2026: Shared Tasks}, pp. 766--770, October 2026. DOI: 10.18653/2026.arabicnlp-sharedtasks.96.
 \end{onecolentry}
 
-% ─── SKILLS ────────────────────────────────────────────────────────────────────
 \section{Technical Skills}
-
 \begin{onecolentry}
-\textbf{Machine Learning:} Scikit-learn, Feature Engineering, Model Evaluation, Grid Search, XGBoost
+\textbf{AI Agents \& RAG:} LangGraph, embeddings, pgvector, Qdrant, Ollama, Groq API, structured outputs, document retrieval
 
-\textbf{Deep Learning:} PyTorch, TensorFlow / Keras, Neural Networks, Computer Vision
+\textbf{Machine Learning:} Scikit-learn, XGBoost, feature engineering, model evaluation, grid search; TensorFlow/Keras; familiarity with PyTorch
 
-\textbf{LLMs \& RAG:} Retrieval-Augmented Generation, Embeddings, pgvector, Ollama, Groq API, Hugging Face, Vision-Language Models (Qwen-VL), Structured Outputs (JSON Schema)
+\textbf{NLP \& Speech:} CAMeL Tools, NER, BERTopic, NetworkX/Wikidata, Whisper, Qwen vision-language models
 
-\textbf{NLP \& Speech:} Arabic NLP (CAMeL Tools), Named Entity Recognition, Topic Modeling (BERTopic), Knowledge Graphs (NetworkX, Wikidata), Speech-to-Text (Whisper)
-
-\textbf{Backend \& Data:} Python, SQL, PostgreSQL, Django, FastAPI, Celery, Redis, SQLAlchemy, REST APIs, Pandas, NumPy
+\textbf{Backend \& Data:} Python, SQL, FastAPI, Django, Flask, PostgreSQL, Celery, Redis, SQLAlchemy/SQLModel, Pandas, NumPy
 
 \textbf{Tools:} Docker, Git, GitHub Actions, Linux, Jupyter, Streamlit
 \end{onecolentry}
 
-% ─── EXPERIENCE ────────────────────────────────────────────────────────────────
-\section{Experience}
-
-\begin{twocolentry}{Nov 2024 -- Apr 2025}
-    \textbf{Freelance Backend Developer} $|$ StockGo (Qatar)
-\end{twocolentry}
-\begin{onecolentry}
-    \begin{highlights}
-        \item Built and deployed a Django REST API and analytics dashboard for a live inventory-tracking product (thestockgo.com), including the data model, endpoints and reporting queries over PostgreSQL.
-    \end{highlights}
-\end{onecolentry}
-
-\vspace{0.14cm}
-
-\begin{twocolentry}{Oct 2024 -- Feb 2025}
-    \textbf{Backend Developer Intern} $|$ Venture Appital
-\end{twocolentry}
-\begin{onecolentry}
-    \begin{highlights}
-        \item Built modular RESTful microservices in Flask with full unit-test coverage.
-    \end{highlights}
-\end{onecolentry}
-
-\vspace{0.14cm}
-
-\begin{twocolentry}{Mar 2025 -- Apr 2025}
-    \textbf{Full Stack Developer Intern} $|$ NfrtiX
-\end{twocolentry}
-\begin{onecolentry}
-    \begin{highlights}
-        \item Built an internal Django/JavaScript web application to streamline internal operations.
-    \end{highlights}
-\end{onecolentry}
-
-% ─── EDUCATION ─────────────────────────────────────────────────────────────────
 \section{Education}
-
 \begin{twocolentry}{Sep 2019 -- Jun 2024}
-    \textbf{Faculty of Engineering, Alexandria University}\\
-    BS in Communication and Electronics Engineering
+\textbf{Alexandria University -- Faculty of Engineering}\\
+BS in Communication and Electronics Engineering
 \end{twocolentry}
+\begin{onecolentry}\begin{highlights}
+\item \textbf{\href{https://mohammed-eid-portfolio.vercel.app/adas}{ADAS graduation project}}: A+, ranked 5th of about 60 in the \textbf{Valeo competition}. Led software architecture and computer vision; mentored by Valeo and sponsored by ITIDA's Egypt Makes Electronics program.
+\end{highlights}\end{onecolentry}
+
+\section{Selected Certifications \& Training}
 \begin{onecolentry}
-    \begin{highlights}
-        \item Graduation project: \textbf{\href{https://mohammed-eid-portfolio.vercel.app/adas}{Advanced Driver Assistance Systems (ADAS)}}, Grade A+, ranked 5th of about 60 projects in the Value competition. Team lead on the software side of a five-repository embedded and computer-vision system, mentored by Valeo and sponsored by ITIDA's Egypt Makes Electronics program.
-    \end{highlights}
+\textbf{AI \& Data Science Diploma} -- Digilians, MCIT scholarship \hfill Sep 2026\\
+\textbf{\href{https://aws.amazon.com/verification}{AWS Machine Learning Engineer -- Associate}} \hfill Sep 2026\\
+\textbf{\href{https://e.huawei.com/en/talent/\#/cert/certificate-verification}{Huawei HCIA-AI}} \hfill Aug 2026\\
+\textbf{\href{https://www.coursera.org/account/accomplishments/specialization/L3AI1XFNW950}{IBM AI Engineering Professional Certificate}} \hfill Jun 2026\\
+\textbf{\href{https://www.coursera.org/account/accomplishments/specialization/BZQOVQR0HKXI}{Machine Learning Specialization -- Stanford / DeepLearning.AI}} \hfill May 2026\\
+\textbf{Microsoft Data Engineer -- DEPI (159 hours)} \hfill Oct 2024
 \end{onecolentry}
-
-% ─── CERTIFICATIONS ────────────────────────────────────────────────────────────
-\section{Certifications}
-
-\begin{highlights}
-    \item \textbf{AI \& Data Science Diploma} $|$ Digilians (MCIT / Egyptian Military Academy scholarship) \hfill Dec 2025 -- Sep 2026
-
-    \item \textbf{\href{https://www.coursera.org/account/accomplishments/specialization/L3AI1XFNW950}{IBM AI Engineering Professional Certificate}} $|$ IBM / Coursera \hfill Jun 2026
-
-    \item \textbf{\href{https://www.coursera.org/account/accomplishments/specialization/BZQOVQR0HKXI}{Machine Learning Specialization}} $|$ Stanford \& DeepLearning.AI (Andrew Ng) \hfill May 2026
-
-    \item \textbf{\href{https://coursera.org/verify/9B7HT7WVGLJ0}{Generative AI for Data Science with Copilot}} $|$ Microsoft / Coursera \hfill Apr 2026
-
-    \item \textbf{\href{https://drive.google.com/file/d/1VoZyLtliZHhE32vgXVa9a-ozB-IVbwj3/view?usp=sharing}{Microsoft Data Engineer (159 hours)}} $|$ Digital Egypt Pioneers Initiative (DEPI) \hfill Apr -- Oct 2024
-
-    \item \textbf{\href{https://aws.amazon.com/verification}{AWS Certified Machine Learning Engineer -- Associate (MLA-C01)}} $|$ Amazon Web Services \hfill Sep 2026 \\
-    Verification code: 3fa65dd3c2cd4078bcb796a49a7ee54c
-
-    \item \textbf{\href{https://e.huawei.com/en/talent/\#/cert/certificate-verification}{Huawei Certified ICT Associate -- AI (HCIA-AI)}} $|$ Huawei \hfill Aug 2026 \\
-    Verification code: 010102001855810447093119310
-\end{highlights}
 
 \end{document}

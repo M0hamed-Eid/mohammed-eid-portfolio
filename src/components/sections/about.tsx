@@ -1,6 +1,9 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { Boxes, Braces, LineChart, Workflow } from "lucide-react";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { Reveal, RevealGroup } from "@/components/shared/reveal";
+import { Reveal, RevealGroup, revealItem } from "@/components/shared/reveal";
 import { siteConfig } from "@/lib/data/site-config";
 
 const STRENGTHS = [
@@ -13,7 +16,7 @@ const STRENGTHS = [
   {
     title: "Machine learning end to end",
     detail:
-      "Feature engineering, model comparison under grid search, and held-out evaluation across tabular, sensor, and multimodal data.",
+      "Feature engineering, model comparison under grid search, and honest held-out evaluation across tabular, sensor, and multimodal data.",
     icon: LineChart,
   },
   {
@@ -23,21 +26,21 @@ const STRENGTHS = [
     icon: Workflow,
   },
   {
-    title: "Backend integration",
+    title: "Systems that actually ship",
     detail:
-      "Django, FastAPI, Celery, and PostgreSQL for APIs, background jobs, and deployment, backed by client and internship experience.",
+      "Django, FastAPI, Celery, PostgreSQL and containerised deployment — the engineering foundation that turns a notebook into a product.",
     icon: Boxes,
   },
 ];
 
 export function About() {
   return (
-    <section id="about" className="relative py-16 sm:py-20">
+    <section id="about" className="relative py-28">
       <div className="mx-auto max-w-6xl px-6">
         <div className="grid lg:grid-cols-[1fr_1fr] gap-12 items-start">
           <SectionHeading
             eyebrow="About"
-            title="AI work, built on software engineering."
+            title="Engineer turning data into intelligence."
           />
 
           <div>
@@ -48,11 +51,10 @@ export function About() {
             </Reveal>
             <Reveal delay={0.18}>
               <p className="text-muted-foreground leading-relaxed text-base sm:text-lg mt-5">
-                I studied Communication and Electronics Engineering at Alexandria
-                University, where I led the software architecture and computer-vision
-                workstream of an ADAS graduation project. My backend work includes an
-                inventory API and analytics dashboard for StockGo, alongside Flask and
-                Django internships.
+                That foundation started in Communication &amp; Electronics Engineering at
+                Alexandria University, where I led an autonomous-driving graduation project
+                written from bare metal upward — a habit of understanding a system all the
+                way down that I have carried into every AI system I have built since.
               </p>
             </Reveal>
           </div>
@@ -60,8 +62,9 @@ export function About() {
 
         <RevealGroup className="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-5" stagger={0.08}>
           {STRENGTHS.map((strength) => (
-            <div
+            <motion.div
               key={strength.title}
+              variants={revealItem}
               className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 hover:border-brand-violet/30 hover:bg-white/[0.04] transition-colors"
             >
               <div className="flex size-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-violet/20 to-brand-pink/20 border border-white/10 mb-4">
@@ -71,7 +74,7 @@ export function About() {
               <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
                 {strength.detail}
               </p>
-            </div>
+            </motion.div>
           ))}
         </RevealGroup>
       </div>

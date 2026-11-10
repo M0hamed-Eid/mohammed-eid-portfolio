@@ -52,3 +52,7 @@ cv/*.out
 cv/*.synctex.gz
 cv/*.toc
 cv/main.pdf
+
+# Local artifact generation and review files
+/tmp/
+/output/

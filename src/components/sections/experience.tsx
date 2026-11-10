@@ -1,24 +1,31 @@
+"use client";
+
 import { ArrowUpRight, Briefcase } from "lucide-react";
+import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { experience } from "@/lib/data/experience";
 
 export function Experience() {
   return (
-    <section id="experience" className="relative py-16 sm:py-20">
+    <section id="experience" className="relative py-28">
       <div className="mx-auto max-w-6xl px-6">
         <SectionHeading
           eyebrow="Experience"
-          title="Engineering experience."
-          description="Client delivery and internships in Python backend and full-stack development."
+          title="Where I've shipped."
+          description="AI engineering internship work alongside client delivery and Python backend experience."
         />
 
         <div className="mt-14 relative max-w-3xl">
           <div className="absolute left-[15px] top-2 bottom-2 w-px bg-gradient-to-b from-brand-violet/60 via-brand-pink/40 to-transparent" />
 
           <div className="space-y-10">
-            {experience.map((entry) => (
-              <div
+            {experience.map((entry, idx) => (
+              <motion.div
                 key={entry.company}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
                 className="relative pl-11"
               >
                 <div className="absolute left-0 top-1 flex size-8 items-center justify-center rounded-full bg-background border-2 border-brand-violet/50">
@@ -61,7 +68,7 @@ export function Experience() {
                     ))}
                   </div>
                 )}
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { Award, BadgeCheck, ExternalLink, ZoomIn } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { SectionHeading } from "@/components/shared/section-heading";
@@ -59,8 +60,8 @@ function CertCard({
           <span
             className={`absolute top-3 right-3 rounded-full px-2.5 py-1 text-[0.65rem] font-semibold ${
               cert.status === "Completed"
-                ? "bg-background text-emerald-400"
-                : "bg-background text-brand-orange"
+                ? "bg-emerald-400/15 text-emerald-400"
+                : "bg-brand-orange/15 text-brand-orange"
             }`}
           >
             {cert.status}
@@ -79,7 +80,7 @@ function CertCard({
             {cert.detail}
           </p>
           <div className="mt-3 flex items-center justify-between gap-3">
-            <p className="text-xs text-muted-foreground">{cert.period}</p>
+            <p className="text-xs text-muted-foreground/70">{cert.period}</p>
             {cert.verifyUrl && (
               <a
                 href={cert.verifyUrl}
@@ -97,7 +98,7 @@ function CertCard({
               </a>
             )}
           </div>
-          {cert.verifyCode && <p className="mt-3 text-xs text-muted-foreground break-all">Verification code: <span className="select-all font-mono">{cert.verifyCode}</span></p>}
+          {cert.verifyCode && <p className="mt-3 break-all text-xs text-muted-foreground">Verification code: <span className="select-all font-mono">{cert.verifyCode}</span></p>}
         </div>
       </div>
     </Reveal>
@@ -110,27 +111,24 @@ export function Certifications() {
   const panelRef = useFocusOnOpen<HTMLDivElement>(!!active);
 
   function handleVerify(cert: Certification) {
-    // Keep native anchor navigation synchronous: popup blockers must not turn
-    // a failed clipboard operation into a failed credential-verification link.
+    // Preserve native navigation even if clipboard permission is unavailable.
     if (!cert.verifyCode || !navigator.clipboard) return;
     void navigator.clipboard.writeText(cert.verifyCode).then(() => {
       setCopiedCode(cert.name);
-    }).catch(() => {
-      setCopiedCode(null);
-    });
+    }).catch(() => setCopiedCode(null));
   }
 
   return (
-    <section id="certifications" className="relative py-16 sm:py-20">
+    <section id="certifications" className="relative py-28">
       <div className="mx-auto max-w-6xl px-6">
         <SectionHeading
           eyebrow="Certifications"
           title="Continuous learning."
-          description="AI training and selected credentials. Open a certificate or follow its issuer verification link."
+          description="Credentials that back the work — click any certificate to view it full size, or verify it directly with the issuer."
         />
 
         <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featured.slice(0, 3).map((cert, idx) => (
+          {featured.map((cert, idx) => (
             <CertCard
               key={cert.name}
               cert={cert}
@@ -142,24 +140,42 @@ export function Certifications() {
           ))}
         </div>
 
-        <details className="mt-6 rounded-2xl border border-white/10 p-5 sm:p-6">
-          <summary className="cursor-pointer font-medium text-sm">More credentials &amp; foundational coursework ({featured.length - 3 + foundation.length})</summary>
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[...featured.slice(3), ...foundation].map((cert, index) => (
-              <CertCard key={cert.name} cert={cert} index={index} onOpen={setActive} copiedCode={copiedCode} onVerify={handleVerify} />
-            ))}
-          </div>
-        </details>
-        <p role="status" className="mt-3 text-xs text-muted-foreground">{copiedCode ? `Verification code copied for ${copiedCode}. Paste it on the issuer’s site.` : ""}</p>
+        {foundation.length > 0 && (
+          <>
+            <Reveal className="mt-16">
+              <h3 className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+                Foundational coursework
+              </h3>
+              <p className="text-sm text-muted-foreground mt-2 max-w-xl leading-relaxed">
+                Where the Python and data-handling groundwork started, back in 2023.
+              </p>
+            </Reveal>
+            <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {foundation.map((cert, idx) => (
+                <CertCard
+                  key={cert.name}
+                  cert={cert}
+                  index={idx}
+                  onOpen={setActive}
+                  copiedCode={copiedCode}
+                  onVerify={handleVerify}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
 
       <Dialog open={!!active} onOpenChange={(open) => !open && setActive(null)}>
-        <DialogContent className="w-[calc(100%-2rem)] max-w-4xl sm:max-w-4xl max-h-[90dvh] overflow-y-auto bg-popover border-none shadow-none p-0">
+        <DialogContent className="max-w-4xl bg-transparent border-none shadow-none p-0">
           <DialogTitle className="sr-only">
             {active ? `${active.name} — ${active.issuer}` : ""}
           </DialogTitle>
           {active?.image && (
-            <div
+            <motion.div
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
               ref={panelRef}
               tabIndex={-1}
               className="rounded-2xl overflow-hidden glass p-2 sm:p-3 outline-none"
@@ -197,7 +213,7 @@ export function Certifications() {
                   </a>
                 )}
               </div>
-            </div>
+            </motion.div>
           )}
         </DialogContent>
       </Dialog>

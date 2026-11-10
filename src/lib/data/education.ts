@@ -189,9 +189,9 @@ export const achievements: Achievement[] = [
     href: "https://huggingface.co/datasets/palestinian-kg/palestinian-cultural-knowledge",
   },
   {
-    title: "79.00% on the ImageEval 2026 / ArabicNLP shared task",
+    title: "Co-author — ArabicNLP 2026 shared-task paper",
     detail:
-      "AynVQA-MSA scored 395/500 on the official development split for Arabic spoken visual question answering — nearly double the organizers' own MSA baseline of 39.8%.",
+      "Published Arabic spoken VQA research in ACL Anthology: 65.6% blind-test accuracy on 1,000 examples, with an analysis of the development-to-test recording shift.",
     icon: "Target",
     href: "/projects/aynvqa-msa",
   },

@@ -1,17 +1,26 @@
-import { contentIcons } from "@/components/shared/content-icons";
-import { ArrowDown } from "lucide-react";
+"use client";
+
+import * as Icons from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowRight, ArrowDown } from "lucide-react";
 import type { DiagramStage } from "@/lib/data/diagrams";
 
 export function PipelineDiagram({ stages }: { stages: DiagramStage[] }) {
   return (
     <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-6 sm:p-8 overflow-x-auto">
-      <div className="grid gap-3 lg:grid-cols-5">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-2 min-w-fit">
         {stages.map((stage, idx) => {
-          const Icon = contentIcons[stage.icon];
+          const Icon = (Icons as unknown as Record<string, Icons.LucideIcon>)[
+            stage.icon
+          ];
           return (
-            <div key={stage.label} className="flex flex-col items-stretch gap-3">
-              <div
-                className="h-full rounded-2xl border border-white/10 bg-white/[0.03] p-4 sm:p-5 min-w-0"
+            <div key={stage.label} className="flex sm:flex-1 items-center gap-3 sm:gap-2">
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="flex-1 rounded-2xl border border-white/10 bg-white/[0.03] p-4 sm:p-5 min-w-[9rem]"
               >
                 <div className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-brand-violet/20 to-brand-pink/20 border border-white/10 mb-3">
                   {Icon && <Icon className="size-4 text-brand-pink" />}
@@ -20,13 +29,18 @@ export function PipelineDiagram({ stages }: { stages: DiagramStage[] }) {
                 <p className="text-xs text-muted-foreground mt-1 leading-snug">
                   {stage.detail}
                 </p>
-              </div>
+              </motion.div>
               {idx < stages.length - 1 && (
-                <div
-                  className="self-center text-brand-violet/70 lg:hidden"
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: idx * 0.1 + 0.15 }}
+                  className="shrink-0 text-brand-violet/50"
                 >
-                  <ArrowDown className="size-5" />
-                </div>
+                  <ArrowRight className="hidden sm:block size-5" />
+                  <ArrowDown className="sm:hidden size-5" />
+                </motion.div>
               )}
             </div>
           );

@@ -133,6 +133,9 @@ export default async function ProjectPage({
                 {project.deploymentNote ? "Frontend preview" : "Live demo"}
               </a>
             )}
+            {project.links.paper && (
+              <a href={project.links.paper} target="_blank" rel="noopener noreferrer" className={cn(buttonVariants({ variant: "outline" }), "rounded-full gap-2")}>Published paper · ACL Anthology</a>
+            )}
             {project.links.dataset && (
               <a
                 href={project.links.dataset}

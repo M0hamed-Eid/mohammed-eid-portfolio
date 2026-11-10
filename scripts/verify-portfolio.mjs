@@ -6,7 +6,7 @@ import { test } from "node:test";
 const base = new URL(process.env.PORTFOLIO_TEST_URL ?? "http://127.0.0.1:3001");
 assert.ok(["127.0.0.1", "localhost"].includes(base.hostname), "Smoke checks must target a local server");
 const canonical = "https://mohammed-eid-portfolio.vercel.app";
-const routes = ["/", "/adas", "/resume", "/projects/ai-compass", "/projects/palestinian-cultural-knowledge-platform", "/projects/aynvqa-msa", "/projects/fitness-activity-tracker"];
+const routes = ["/", "/adas", "/resume", "/projects/ai-compass", "/projects/palestinian-cultural-knowledge-platform", "/projects/aynvqa-msa", "/projects/fitness-activity-tracker", "/projects/sprints-digital-twin"];
 const htmlByRoute = new Map();
 
 for (const route of routes) {
@@ -24,8 +24,8 @@ for (const route of routes) {
     assert.match(html, /<meta property="og:image"/);
     assert.match(html, /<meta name="twitter:image"/);
     assert.match(html, /Skip to content/);
-    assert.doesNotMatch(html, /style="[^"]*opacity:\s*0(?:;|")/, "Primary content must not start hidden");
-    assert.doesNotMatch(html, /class="splash-screen"|<canvas\b/);
+    assert.match(html, /class="splash-screen"/);
+    assert.match(html, /<canvas\b/);
     const structured = [...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)];
     assert.ok(structured.length > 0);
     for (const [, raw] of structured) assert.ok(JSON.parse(raw)["@graph"]);
@@ -38,27 +38,35 @@ for (const route of routes) {
   });
 }
 
-test("homepage prioritizes evidence and preserves section anchors", async () => {
+test("restored homepage preserves sections, new work and publication", async () => {
   const html = htmlByRoute.get("/") ?? await (await fetch(base)).text();
   const sections = [...html.matchAll(/<section id="([^"]+)"/g)].map(([, id]) => id);
-  assert.deepEqual(sections.slice(0, 3), ["top", "projects", "experience"]);
-  assert.ok(sections.indexOf("skills") > sections.indexOf("projects"));
+  assert.deepEqual(sections.slice(0, 3), ["top", "about", "education"]);
+  assert.ok(sections.includes("publications"));
   for (const [, id] of html.matchAll(/<a\b[^>]*href="#([^"]+)"/g)) assert.ok(html.includes(`id="${id}"`), `Missing anchor: ${id}`);
-  assert.match(html, /395 \/ 500/);
-  assert.match(html, /official development split/);
-  assert.match(html, /Backend paused/);
+  assert.match(html, /65\.6/);
+  assert.match(html, /Digilians at ImageEval 2026/);
+  assert.match(html, /SprintFlow/);
   assert.doesNotMatch(html, /AI\/ML Projects Shipped|Best Benchmark Accuracy|Every claim on this site/);
 });
 
-test("case studies explain evaluation and deployment scope", async () => {
+test("case studies include published evaluation and private internship scope", async () => {
   const ai = await (await fetch(new URL("/projects/ai-compass", base))).text();
   assert.match(ai, /Frontend preview/);
   assert.match(ai, /backend is currently paused/);
   const vqa = await (await fetch(new URL("/projects/aynvqa-msa", base))).text();
-  assert.match(vqa, /not a held-out test result/);
+  assert.match(vqa, /1,000-example blind test/);
   assert.ok(vqa.indexOf('id="project-results"') < vqa.indexOf("The Problem"));
   const fitness = await (await fetch(new URL("/projects/fitness-activity-tracker", base))).text();
   assert.match(fitness, /unseen participants/);
+  const twin = await (await fetch(new URL("/projects/sprints-digital-twin", base))).text();
+  assert.match(twin, /4 Oct — 15 Nov 2026/);
+  assert.match(twin, /proxy mode/);
+  assert.match(twin, /Repository Private/);
+  assert.doesNotMatch(twin, /href="https:\/\/github.com\/[^"]*sprints-digital-twin/);
+  const adas = await (await fetch(new URL("/adas", base))).text();
+  assert.doesNotMatch(adas, /Value competition/);
+  assert.match(adas, /Valeo competition/);
 });
 
 test("legacy ADAS URL redirects and missing project returns 404", async () => {
@@ -88,7 +96,7 @@ test("PDF, optimized image, share image and crawl endpoints respond", async () =
     await response.arrayBuffer();
   }
   const sitemap = await (await fetch(new URL("/sitemap.xml", base))).text();
-  assert.equal([...sitemap.matchAll(/<loc>/g)].length, 7);
+  assert.equal([...sitemap.matchAll(/<loc>/g)].length, 8);
   assert.doesNotMatch(sitemap, /projects\/adas-graduation-project/);
 });
 

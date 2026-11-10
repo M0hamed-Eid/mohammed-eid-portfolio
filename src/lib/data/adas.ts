@@ -26,7 +26,7 @@ export const adasOverview = {
   grade: "A+",
   mentor: "Valeo",
   sponsor: "ITIDA — Egypt Makes Electronics (EME)",
-  rank: "5th of ~60 graduation projects (Value competition)",
+  rank: "5th of ~60 graduation projects (Valeo competition)",
   org: "https://github.com/V2ADAS",
   summary:
     "A scaled research vehicle that perceives its surroundings with an eight-sensor ultrasonic ring, estimates its own pose by fusing an IMU with a magnetometer and wheel odometry, plans geometric parking trajectories, tracks them closed-loop, brakes autonomously for obstacles, and streams live telemetry to a desktop cockpit that redraws a map of the world around it.",
@@ -232,7 +232,7 @@ export const adasChallenges = [
 ];
 
 export const adasResults = [
-  "Grade A+ — ranked 5th of approximately 60 graduation projects in the Value competition",
+  "Grade A+ — ranked 5th of approximately 60 graduation projects in the Valeo competition",
   "Mentored by Valeo and sponsored by ITIDA's Egypt Makes Electronics (EME) programme",
   "Roughly 800 KB of hand-written C across five repositories, with zero vendor HAL dependencies",
   "Complete bare-metal driver suite: GPIO, EXTI, I2C, SPI, USART, TIMER, SysTick, NVIC, RCC, watchdog and FPU",
