@@ -1,103 +1,82 @@
 # Mohammed Eid — Portfolio
 
-Personal portfolio built with Next.js 16 (App Router), TypeScript, Tailwind CSS v4,
-shadcn/ui (Base UI primitives), and Framer Motion.
+AI/ML engineering portfolio built with Next.js 16.4 App Router, React 19, strict
+TypeScript, Tailwind CSS 4, Base UI and Framer Motion. The deployment target is
+Vercel. Compatible security updates are tracked in the lockfile; unused next-themes and
+simple-icons dependencies were removed. No new runtime dependencies were added.
 
-## Stack
+## Local development
 
-- **Framework:** Next.js 16 (App Router, Turbopack)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS v4, shadcn/ui
-- **Animation:** Framer Motion
-- **Icons:** lucide-react + simple-icons (for brand marks lucide dropped: GitHub, Hugging Face, Kaggle) + a hand-maintained LinkedIn path
-- **Forms:** react-hook-form + zod
-- **Email:** Resend (contact form)
-- **Deployment target:** Vercel
-
-## Getting started
-
-```bash
-npm install
-cp .env.example .env.local   # then fill in RESEND_API_KEY
+```sh
+npm ci
+cp .env.example .env.local
 npm run dev
 ```
 
-## Environment variables
+The homepage, project case studies, ADAS page, CV preview and PDF work without
+email credentials. The contact form needs `RESEND_API_KEY` to deliver messages.
+Set `CONTACT_FROM_EMAIL` to a verified sender and `CONTACT_TO_EMAIL` to the
+intended inbox. Resend's default sandbox sender can only deliver to the account
+owner. Empty optional values should be omitted from the environment.
 
-| Variable | Required | Purpose |
-|---|---|---|
-| `RESEND_API_KEY` | For the contact form to send email | Get one free at [resend.com](https://resend.com/api-keys) |
+Without a working email provider, the form reports failure and preserves the
+message for an email-app fallback. Direct email and LinkedIn links remain visible.
+The local verification script never sends an email.
 
-Locally: put it in `.env.local` (already gitignored). On Vercel: add it under
-**Project Settings → Environment Variables** before the contact form will work in production.
-Without it, the form fails gracefully with a "not configured yet" message — the rest of the site is unaffected.
+## Content and assets
 
-## Content model
+- `src/lib/data/site-config.ts`: identity, roles, summary, public URL and links.
+- `src/lib/data/projects.ts`: case studies, ownership, scoped homepage outcomes,
+  deployment notes and evaluation limitations. Update these together.
+- `skills.ts`, `experience.ts`, `education.ts`: skills, work, degree and credentials.
+- `adas.ts`, `diagrams.ts`: detailed system content and architecture stages.
+- `public/images/`: portrait, certificates, project visuals and CV previews.
+- `cv/main.tex`: résumé source; the existing CV workflow compiles the PDF and
+  previews. Edit the source and regenerate rather than editing the PDF directly.
 
-All content lives in `src/lib/data/*.ts` — edit these files to update copy, projects, skills,
-experience, certifications, and achievements without touching component code:
+Project pages are prebuilt. The legacy ADAS project slug redirects to `/adas`.
+AI Compass's frontend preview is linked with a paused-backend notice. The dataset
+card is public but file access is gated. Keep these statuses accurate when hosting
+or access changes. No test-set accuracy, deployment uptime or client metrics should
+be inferred from development evaluations.
 
-- `site-config.ts` — name, roles, links, summary
-- `projects.ts` — the 5 featured projects (problem/architecture/tech/challenges/results/links/images)
-- `skills.ts` — skills grouped by category with a 3-tier proficiency signal (Core/Proficient/Familiar)
-- `education.ts` — degree, grad project, certifications, achievements
-- `experience.ts` — work history
-- `diagrams.ts` — the stage labels used by the animated pipeline diagram on each project page
+## Checks
 
-## Assets still needed
-
-The site works and looks complete without these — it falls back gracefully — but these are the
-things only you can provide:
-
-1. **Profile photo** → `public/images/profile/photo.jpg`
-   Until this exists, the hero shows a gradient-ring initials placeholder ("ME") instead.
-2. **Certificate images** → `public/images/certificates/{slug}.jpg`, where slug is one of
-   `digilians`, `ibm`, `andrew-ng`, `depi`, `aws` (see `imageSlug` in `src/lib/data/education.ts`).
-   Until each exists, that certificate card shows an "image coming soon" placeholder instead of
-   being clickable.
-3. **AI Compass / AynVQA-MSA repos are private.** Their project pages already link to the right
-   URL but show a disabled "Repository Private" badge instead of a working button. Once you flip
-   either repo to public on GitHub (Settings → General → Danger Zone → Change visibility), update
-   `githubPending: false` for that project in `src/lib/data/projects.ts` and the button goes live.
-4. **ADAS project detail is thinner than the other four** — no repo exists to verify tech stack or
-   specific engineering challenges, so `src/lib/data/projects.ts` only includes what's verified
-   (grade, ranking, mentorship, feature list). Add real detail there if you want it as rich as the
-   other four project pages.
-5. **This repo isn't pushed to GitHub yet.** The Contact section links to
-   `https://github.com/M0hamed-Eid/mohammed-eid-portfolio` as the "Portfolio Source Code" link —
-   create that repo and push this code (see below) to make the link real.
-
-## Deploying
-
-**Why Vercel over GitHub Pages:** GitHub Pages only serves static files — it can't run the
-`/api/contact` route (a real server function), and it can't use `next/image`'s on-demand
-optimization, both of which this site relies on. Making it work on GitHub Pages would mean
-`output: "export"` (a fully static export), which drops the contact form's backend and image
-optimization entirely. Vercel is Next.js's own platform: zero-config deploys straight from GitHub,
-free tier is generous enough for a portfolio, and every feature used here (API routes, image
-optimization, `next/og` for the dynamic favicon/OG image, ISR if ever needed) works out of the box.
-
-```bash
-# 1. Push this repo to GitHub (create the repo on GitHub first, then:)
-git remote add origin https://github.com/M0hamed-Eid/mohammed-eid-portfolio.git
-git push -u origin main
-
-# 2. Go to vercel.com → New Project → import the GitHub repo → Deploy
-#    (Next.js is auto-detected, no config needed)
-
-# 3. Before or right after the first deploy, add the RESEND_API_KEY env var in
-#    Vercel's Project Settings → Environment Variables, then redeploy.
-
-# 4. Once you have a real vercel.app URL (or a custom domain), update
-#    `siteConfig.url` in src/lib/data/site-config.ts to match — it feeds
-#    the sitemap, robots.txt, and Open Graph metadata.
+```sh
+npm run lint
+npm run build
+npm run start -- --hostname 127.0.0.1 --port 3001
+node --test scripts/verify-portfolio.mjs
 ```
 
-## Scripts
+The verification script targets `http://127.0.0.1:3001` by default. Override
+`PORTFOLIO_TEST_URL` only for another local port. It checks rendered routes,
+metadata, assets, canonical redirect, missing-page handling, and non-delivering
+contact cases (invalid input, oversized JSON, honeypot and throttling).
 
-```bash
-npm run dev     # local dev server (Turbopack)
-npm run build   # production build
-npm run start   # run the production build locally
-npm run lint    # ESLint
-```
+Next's Google font loader needs outbound access at build time. If Turbopack cannot
+bind its internal worker port in a restricted environment, use
+`npm run build -- --webpack` (the same production application with Webpack).
+Do not run a build while editing source or reuse a stale build for acceptance.
+
+CI runs lint and the production build on pushes and pull requests; the separate
+CV workflow retains its existing responsibilities.
+
+## Deployment readiness
+
+1. Run lint, build and local smoke checks against the finished build.
+2. Verify `siteConfig.url` matches the intended canonical production domain.
+3. Configure Resend with a verified sender and confirm delivery manually. A valid
+   submission is intentionally excluded from automated smoke checks.
+4. Check desktop/tablet/mobile views, keyboard menu and lightbox focus, zoom,
+   reduced motion, and form success/failure in an available browser.
+5. Measure Lighthouse and field Core Web Vitals after deployment. No numerical
+   performance or accessibility conformance claim follows from a build passing.
+
+The in-memory contact limiter is bounded and expires entries but applies per
+server instance and resets on cold starts. For persistent distributed throttling,
+configure the hosting provider's edge controls. Forwarding headers must be
+normalized by the trusted proxy.
+
+See [the audit](docs/portfolio-audit.md) for the initial score, issue register,
+priorities, missing evidence and verification limitations.

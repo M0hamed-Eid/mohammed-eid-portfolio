@@ -1,14 +1,12 @@
-"use client";
-
 import Link from "next/link";
-import * as Icons from "lucide-react";
+import { contentIcons } from "@/components/shared/content-icons";
 import { ArrowUpRight } from "lucide-react";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
 import { achievements, type Achievement } from "@/lib/data/education";
 
 function Body({ achievement }: { achievement: Achievement }) {
-  const Icon = (Icons as unknown as Record<string, Icons.LucideIcon>)[achievement.icon];
+  const Icon = contentIcons[achievement.icon];
   return (
     <>
       <div className="flex items-start justify-between gap-3">
@@ -32,7 +30,7 @@ const CARD =
 
 export function Achievements() {
   return (
-    <section id="achievements" className="relative py-28">
+    <section id="achievements" className="relative py-16 sm:py-20">
       <div className="mx-auto max-w-6xl px-6">
         <SectionHeading eyebrow="Achievements" title="Milestones along the way." />
 

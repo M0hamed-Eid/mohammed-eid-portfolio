@@ -7,7 +7,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative border-t border-white/10 mt-24">
+    <footer className="relative border-t border-white/10 mt-8">
       <div className="mx-auto max-w-6xl px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-6">
         <div className="text-center sm:text-left">
           <Link href="/" className="font-display text-xl">
@@ -59,7 +59,7 @@ function FooterLink({
       target={href.startsWith("http") ? "_blank" : undefined}
       rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
       aria-label={label}
-      className="flex size-9 items-center justify-center rounded-full border border-white/10 text-muted-foreground hover:text-foreground hover:border-brand-violet/50 hover:bg-white/5 transition-colors"
+      className="flex size-11 items-center justify-center rounded-full border border-white/10 text-muted-foreground hover:text-foreground hover:border-brand-violet/50 hover:bg-white/5 transition-colors"
     >
       {children}
     </a>

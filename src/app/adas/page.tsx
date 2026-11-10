@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import * as Icons from "lucide-react";
+import { contentIcons } from "@/components/shared/content-icons";
 import {
   ArrowLeft,
   ArrowUpRight,
@@ -38,6 +38,9 @@ export const metadata: Metadata = {
     description:
       "Five repositories, ~800 KB of hand-written C: ultrasonic perception, sensor fusion, parking trajectory planning, and live wireless telemetry mapping.",
     url: `${siteConfig.url}/adas`,
+    type: "website",
+    siteName: siteConfig.name,
+    images: [{ url: `${siteConfig.url}/opengraph-image`, width: 1200, height: 630, alt: `${siteConfig.shortName} — AI/ML portfolio` }],
   },
 };
 
@@ -239,7 +242,7 @@ export default function AdasPage() {
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
             {adasCapabilities.map((cap) => {
-              const Icon = (Icons as unknown as Record<string, Icons.LucideIcon>)[cap.icon];
+              const Icon = contentIcons[cap.icon];
               return (
                 <div
                   key={cap.name}

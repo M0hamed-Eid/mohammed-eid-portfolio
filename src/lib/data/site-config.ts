@@ -1,15 +1,17 @@
 export const siteConfig = {
   name: "Mohammed Eid Abdelmeguid",
   shortName: "Mohammed Eid",
-  roles: ["AI Engineer", "Machine Learning Engineer", "Data Scientist"],
+  roles: ["AI Engineer", "Machine Learning Engineer", "Generative AI Engineer", "Data Scientist"],
   location: "Alexandria, Egypt",
   email: "MohammedEidAbdelmeguid@gmail.com",
   phone: "+20 12 10649832",
   tagline:
-    "Building intelligent systems at the intersection of engineering discipline and modern AI — from multi-agent RAG platforms to production ML pipelines.",
+    "I build retrieval systems, LLM applications, and ML pipelines — with the Python backend engineering to make them work end to end.",
+  description:
+    "AI/ML engineer in Alexandria, Egypt. Explore multi-agent RAG, Arabic NLP, multimodal AI, and Python backend projects with architecture and evaluation results.",
   summary:
-    "AI/ML Engineer who recently completed a 9-month AI & Data Science diploma, with hands-on experience designing and shipping full-stack AI systems end to end: a multi-agent RAG platform with a custom recommendation engine, and an Arabic NLP knowledge-graph and retrieval pipeline. Comfortable across the ML lifecycle — data ingestion, feature engineering, model evaluation, and deployment design — backed by a software engineering foundation in Python, Django, REST APIs, and PostgreSQL that translates directly into shipping working AI systems, not just notebooks.",
-  availability: "Open to AI/ML Engineer & Data Scientist roles",
+    "I’m an AI/ML engineer based in Alexandria, Egypt, with a background in Python backend development. My work includes a multi-agent RAG and recommendation platform, an Arabic knowledge-graph and retrieval pipeline, and a spoken visual question-answering system. I focus on data quality, evaluation, and the APIs and background services that connect models to applications. I completed the nine-month Digilians AI & Data Science diploma in September 2026.",
+  availability: "Open to AI, ML, Generative AI & Data Science roles",
   links: {
     github: "https://github.com/M0hamed-Eid",
     linkedin: "https://linkedin.com/in/mohammed-eid-abdelmeguid",

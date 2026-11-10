@@ -22,7 +22,7 @@ export const experience: ExperienceEntry[] = [
     role: "Backend Developer Intern",
     company: "Venture Appital",
     period: "Oct 2024 — Feb 2025",
-    detail: "Built modular RESTful microservices in Flask with full unit-test coverage.",
+    detail: "Built modular RESTful microservices in Flask with unit tests.",
     stack: ["Flask", "REST APIs", "Microservices", "Unit Testing"],
   },
   {

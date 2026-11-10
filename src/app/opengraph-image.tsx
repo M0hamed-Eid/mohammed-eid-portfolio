@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
-import { siteConfig } from "@/lib/data/site-config";
 
 export const size = { width: 1200, height: 630 };
+export const alt = "Mohammed Eid Abdelmeguid — AI Engineer and Machine Learning Engineer";
 export const contentType = "image/png";
 
 export default function OpengraphImage() {
@@ -39,7 +39,7 @@ export default function OpengraphImage() {
               display: "flex",
             }}
           />
-          Open to AI/ML Engineer & Data Scientist roles
+          AI Engineering · Machine Learning · Generative AI
         </div>
         <div
           style={{
@@ -75,7 +75,7 @@ export default function OpengraphImage() {
             maxWidth: 900,
           }}
         >
-          {siteConfig.roles.join("  ·  ")}
+          RAG systems · Arabic NLP · Python backend
         </div>
       </div>
     ),

@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 
 /**
  * The eight-sensor ultrasonic ring, laid out to match the sensor map documented
@@ -39,13 +36,9 @@ export function AdasSensorRing() {
             </desc>
 
             {/* detection cones */}
-            {SENSORS.map((s, i) => (
-              <motion.g
+            {SENSORS.map((s) => (
+              <g
                 key={`cone-${s.id}`}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.4 + i * 0.06 }}
               >
                 <path
                   d="M 0 0 L -26 -46 A 53 53 0 0 1 26 -46 Z"
@@ -53,15 +46,11 @@ export function AdasSensorRing() {
                   fill="var(--brand-violet)"
                   opacity={0.13}
                 />
-              </motion.g>
+              </g>
             ))}
 
             {/* chassis */}
-            <motion.rect
-              initial={{ opacity: 0, scale: 0.94 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+            <rect
               style={{ transformOrigin: "center" }}
               x="62"
               y="46"
@@ -79,13 +68,9 @@ export function AdasSensorRing() {
             <line x1="120" y1="150" x2="120" y2="212" stroke="var(--brand-pink)" strokeOpacity="0.35" strokeWidth="1" strokeDasharray="4 4" />
 
             {/* sensors */}
-            {SENSORS.map((s, i) => (
-              <motion.circle
+            {SENSORS.map((s) => (
+              <circle
                 key={s.id}
-                initial={{ opacity: 0, scale: 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.35, delay: 0.25 + i * 0.06 }}
                 style={{ transformOrigin: `${s.x}px ${s.y}px` }}
                 cx={s.x}
                 cy={s.y}
@@ -93,7 +78,7 @@ export function AdasSensorRing() {
                 fill="var(--brand-pink)"
               >
                 <title>{`${s.label} ultrasonic sensor`}</title>
-              </motion.circle>
+              </circle>
             ))}
           </svg>
         </div>
@@ -171,13 +156,9 @@ const LAYERS = [
 export function AdasLayerStack() {
   return (
     <div className="space-y-3">
-      {LAYERS.map((layer, idx) => (
-        <motion.div
+      {LAYERS.map((layer) => (
+        <div
           key={layer.name}
-          initial={{ opacity: 0, x: -16 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.5, delay: idx * 0.08 }}
           className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 sm:p-6"
           style={{ borderLeftWidth: 3, borderLeftColor: layer.accent }}
         >
@@ -200,7 +181,7 @@ export function AdasLayerStack() {
               </span>
             ))}
           </div>
-        </motion.div>
+        </div>
       ))}
       <p className="text-xs text-muted-foreground pt-1">
         Each layer may only call the one beneath it — the discipline that kept timing-critical

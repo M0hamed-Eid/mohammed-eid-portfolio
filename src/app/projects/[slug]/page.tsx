@@ -42,6 +42,9 @@ export async function generateMetadata({
       title: `${project.title} — ${project.subtitle}`,
       description: project.summary,
       url: `${siteConfig.url}/projects/${project.slug}`,
+      type: "article",
+      siteName: siteConfig.name,
+      images: [{ url: `${siteConfig.url}/opengraph-image`, width: 1200, height: 630, alt: `${siteConfig.shortName} — AI/ML portfolio` }],
     },
   };
 }
@@ -127,7 +130,7 @@ export default async function ProjectPage({
                 rel="noopener noreferrer"
                 className={cn(buttonVariants({ variant: "outline" }), "rounded-full gap-2")}
               >
-                Live Demo
+                {project.deploymentNote ? "Frontend preview" : "Live demo"}
               </a>
             )}
             {project.links.dataset && (
@@ -141,7 +144,18 @@ export default async function ProjectPage({
               </a>
             )}
           </div>
+          {project.deploymentNote && <p className="mt-4 max-w-2xl rounded-xl border border-brand-orange/30 bg-brand-orange/5 p-4 text-sm text-muted-foreground">{project.deploymentNote}</p>}
+          <p className="mt-6 text-base leading-relaxed text-muted-foreground">{project.summary}</p>
         </Reveal>
+
+        <section aria-labelledby="project-results" className="mt-10 rounded-2xl border border-brand-violet/25 bg-brand-violet/5 p-6 sm:p-8">
+          <h2 id="project-results" className="font-mono text-xs uppercase tracking-widest text-brand-violet">Results &amp; evaluation</h2>
+          <p className="mt-4 text-2xl font-semibold">{project.outcome}</p>
+          <ul className="mt-5 space-y-3">
+            {project.results.map((result) => <li key={result} className="flex gap-3 text-sm leading-relaxed text-muted-foreground"><CheckCircle2 className="mt-1 size-4 shrink-0 text-brand-violet" />{result}</li>)}
+          </ul>
+          {project.evaluationNote && <p className="mt-5 border-t border-white/10 pt-4 text-sm leading-relaxed text-muted-foreground"><span className="font-medium text-foreground">Scope &amp; limitations: </span>{project.evaluationNote}</p>}
+        </section>
 
         <Reveal delay={0.1} className="mt-14">
           <h2 className="text-sm font-semibold uppercase tracking-[0.15em] text-brand-pink mb-3">
@@ -210,23 +224,6 @@ export default async function ProjectPage({
             </div>
           </Reveal>
         )}
-
-        <Reveal delay={0.3} className="mt-14">
-          <h2 className="text-sm font-semibold uppercase tracking-[0.15em] text-brand-pink mb-5">
-            Results
-          </h2>
-          <ul className="grid sm:grid-cols-2 gap-3">
-            {project.results.map((result) => (
-              <li
-                key={result}
-                className="flex gap-2.5 text-sm rounded-xl border border-white/10 bg-white/[0.02] p-4 leading-relaxed"
-              >
-                <CheckCircle2 className="size-4 text-emerald-400 shrink-0 mt-0.5" />
-                {result}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
 
         {project.images.length > 0 && (
           <Reveal delay={0.35} className="mt-14">

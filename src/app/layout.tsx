@@ -4,9 +4,7 @@ import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { ParticleBackground } from "@/components/layout/particle-background";
 import { ScrollProgress } from "@/components/layout/scroll-progress";
-import { LoadingScreen, SessionVisitScript } from "@/components/layout/loading-screen";
 import { StructuredData } from "@/components/shared/structured-data";
 import { siteConfig } from "@/lib/data/site-config";
 
@@ -33,7 +31,7 @@ export const metadata: Metadata = {
     default: `${siteConfig.name} — AI Engineer & Machine Learning Engineer`,
     template: `%s — ${siteConfig.shortName}`,
   },
-  description: siteConfig.summary,
+  description: siteConfig.description,
   alternates: { canonical: siteConfig.url },
   keywords: [
     "AI Engineer",
@@ -59,6 +57,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    images: [`${siteConfig.url}/opengraph-image`],
     title: `${siteConfig.name} — AI Engineer & Machine Learning Engineer`,
     description: siteConfig.tagline,
   },
@@ -72,13 +71,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      // `SessionVisitScript` adds a `session-visited` class to the document element
-      // before hydration, so the server and client class lists legitimately differ.
-      suppressHydrationWarning
       className={`dark ${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground overflow-x-hidden">
-        <SessionVisitScript />
         <StructuredData />
         <a
           href="#main-content"
@@ -87,8 +82,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <TooltipProvider delay={150}>
-          <LoadingScreen />
-          <ParticleBackground />
           <ScrollProgress />
           <Navbar />
           <main id="main-content" className="flex-1">

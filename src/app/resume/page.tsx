@@ -17,6 +17,9 @@ export const metadata: Metadata = {
     description:
       "AI/ML Engineer — multi-agent RAG systems, Arabic NLP, multimodal AI and production ML pipelines.",
     url: `${siteConfig.url}/resume`,
+    type: "website",
+    siteName: siteConfig.name,
+    images: [{ url: `${siteConfig.url}/opengraph-image`, width: 1200, height: 630, alt: `${siteConfig.shortName} — AI/ML portfolio` }],
   },
 };
 
@@ -96,13 +99,17 @@ export default function ResumePage() {
                   month: "long",
                   year: "numeric",
                 })}
-              </time>{" "}
-              · compiled from LaTeX source
+              </time>
             </p>
           </Reveal>
         )}
 
-        <div className="mt-14 space-y-6">
+        <section className="mt-10 rounded-2xl border border-white/10 p-6" aria-labelledby="resume-summary">
+          <h2 id="resume-summary" className="text-lg font-semibold">Professional summary</h2>
+          <p className="mt-3 leading-relaxed text-muted-foreground">{siteConfig.summary}</p>
+          <p className="mt-3 text-sm text-muted-foreground">The PDF contains the full résumé. The page images below provide a visual preview.</p>
+        </section>
+        <div className="mt-8 space-y-6">
           {pages.map((src, idx) => (
             <Reveal key={src} delay={idx === 0 ? 0.1 : 0}>
               <figure className="rounded-2xl overflow-hidden border border-white/10 bg-white shadow-2xl shadow-black/40">
@@ -113,8 +120,8 @@ export default function ResumePage() {
                   height={1812}
                   sizes="(min-width: 896px) 56rem, 100vw"
                   className="w-full h-auto"
-                  priority={idx === 0}
-                  loading={idx === 0 ? undefined : "lazy"}
+                  loading={idx === 0 ? "eager" : "lazy"}
+                  fetchPriority={idx === 0 ? "high" : undefined}
                 />
               </figure>
             </Reveal>

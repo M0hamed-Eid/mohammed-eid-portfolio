@@ -18,8 +18,8 @@ export const tierLabel: Record<SkillTier, string> = {
 };
 
 export const tierDescription: Record<SkillTier, string> = {
-  core: "Heavy, repeated hands-on use across multiple shipped projects",
-  proficient: "Real, working use in at least one substantial project",
+  core: "Repeated hands-on use across projects",
+  proficient: "Applied in at least one substantial project",
   familiar: "Working knowledge — fundamentals, coursework, or early-stage use",
 };
 

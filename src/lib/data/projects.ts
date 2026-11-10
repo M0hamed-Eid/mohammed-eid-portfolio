@@ -26,6 +26,11 @@ export interface Project {
   status: "Live" | "In Progress" | "Completed" | "Ongoing";
   featured: boolean;
   summary: string;
+  /** Short, scoped evidence used on the homepage and case-study header. */
+  outcome: string;
+  outcomeContext: string;
+  deploymentNote?: string;
+  evaluationNote?: string;
   problem: string;
   architecture: string[];
   techStack: string[];
@@ -58,13 +63,17 @@ export const projects: Project[] = [
     status: "Ongoing",
     featured: true,
     summary:
-      "A multi-service AI news platform that ingests content from seven sources, enriches it through a five-agent pipeline, and serves personalized, retrieval-grounded recommendations and a RAG chat assistant through a custom two-stage recommender. Grew across ten milestones from a single-user CLI script into a deployed SaaS product with real billing infrastructure.",
+      "A multi-service AI news platform with seven ingestion sources, five enrichment agents, a two-stage recommender, and a streaming RAG assistant. I led a team of five and built the pipeline, backend integration, and deployment architecture.",
+    outcome: "5-agent pipeline · 7 ingestion sources",
+    outcomeContext: "Offline ranking harness; ~3,567 embedding rows in the deployed corpus.",
+    deploymentNote: "Previously deployed on Vercel and AWS EC2. The backend is currently paused to control hosting costs; the frontend preview may show unavailable data or chat.",
+    evaluationNote: "The ranking harness measures NDCG@10 and MAP. A measured improvement over a baseline is not reported here.",
     problem:
       "News and technical content volume overwhelms readers. Finding grounded, source-cited answers and a personally relevant feed across live articles, papers, releases, and videos is hard to do well — most aggregators either dump everything unranked or rank on engagement alone.",
     architecture: [
       "Three independent services sharing one PostgreSQL/pgvector database: a Python/SQLAlchemy pipeline (scraping, enrichment, RAG, ranking), a Django 5.2 backend (users, billing, JSON API, streaming chat), and a Next.js 16 + React 19 frontend that replaced Django's original server-rendered templates in a full rewrite.",
       "Seven scrapers (arXiv, GitHub releases, Hugging Face, YouTube, RSS, blogs via Playwright, Federal Register) feed a unified content pipeline.",
-      "A five-agent enrichment layer — assistant/RAG, chunk-summary, email, enrichment, and trend-narrative agents — each responsible for one structured transformation, not a single monolithic LLM call.",
+      "A five-agent enrichment layer — assistant/RAG, chunk-summary, email, enrichment, and trend-narrative agents — each responsible for a structured transformation.",
       "RAG stack: local Sentence-Transformer embeddings, PostgreSQL + pgvector (HNSW-indexed passage chunks) for retrieval, and Groq-served LLMs for grounded, cited generation — powering both semantic search and a RAG chat assistant streamed to the client over SSE from a dedicated ASGI process, isolated so a slow stream can't pin the main web workers.",
       "A deterministic two-stage recommender: candidate generation (pgvector similarity + followed entities/topics, with a cold-start fallback) feeding a transparent weighted-scoring stage (interest, quality, freshness, source affinity, novelty) plus MMR diversification and a reserved exploration slice against filter bubbles.",
       "Async infrastructure: Celery + Redis split across three dedicated queues (default, interactive, speech-to-text) so a live search or chat request never queues behind a multi-minute pipeline run, driven by a six-job Celery Beat schedule.",
@@ -153,8 +162,11 @@ export const projects: Project[] = [
     featured: true,
     summary:
       "A reproducible, quality-scored Arabic/English corpus on Palestinian history and culture, turned into structured, queryable knowledge through NLP, retrieval-augmented QA, and a knowledge graph.",
+    outcome: "882 documents · ~890K words",
+    outcomeContext: "Published bilingual corpus; Recall@5 0.93 on the retrieval evaluation.",
+    evaluationNote: "Retrieval used 484 documents and 1,282 indexed passages. The published corpus contains 882 documents. Evaluation query count and relevance-label methodology are not documented here; the public dataset card is viewable, while file access is gated.",
     problem:
-      "Palestinian cultural and historical material online is scattered, unevenly credible, and rarely framed around culture and heritage rather than conflict alone. There was no reproducible, quality-scored, bilingual corpus that could support retrieval-augmented question answering or structured knowledge extraction.",
+      "Palestinian cultural and historical material online is scattered, unevenly credible, and rarely framed around culture and heritage rather than conflict alone. The project set out to assemble a reproducible, quality-scored bilingual corpus for retrieval-augmented question answering and structured knowledge extraction.",
     architecture: [
       "Five source-specific collectors (Wikipedia AR/EN, Semantic Scholar, GDELT, WAFA) behind one shared `BaseCollector` interface, all emitting a unified, schema-validated document record.",
       "A shared pipeline: Arabic/English normalization → composite quality scoring → persistent MinHash/LSH deduplication (Postgres-backed, so duplicates are caught across runs and sources, not just within one run).",
@@ -197,7 +209,7 @@ export const projects: Project[] = [
         challenge:
           "Entity linking against general Wikidata produced homonym collisions on the corpus's most important entities.",
         solution:
-          "Scoped entity linking to a Palestine-related alias table and diagnosed the collision by actually running linking at scale, not by inspecting the code in isolation.",
+          "Scoped entity linking to a Palestine-related alias table and diagnosed the collision during linking runs at scale.",
       },
       {
         challenge:
@@ -235,11 +247,14 @@ export const projects: Project[] = [
     featured: true,
     summary:
       "An end-to-end multimodal pipeline — audio, vision, and language — for the ImageEval 2026 / ArabicNLP shared task: given a spoken Arabic question about an image, transcribe it, recover its three options, and select the correct answer.",
+    outcome: "79.00% development accuracy",
+    outcomeContext: "395/500 correct; up from 374/500 before repair escalation.",
+    evaluationNote: "Measured on the official 500-example development split. This is not a held-out test result or a claim of leaderboard placement.",
     problem:
       "Spoken visual question answering in Modern Standard Arabic compounds three hard problems into one: the question and its three multiple-choice options exist only as speech (no text channel), MSA transcription is meaningfully harder than English in this dataset (the official baseline scores 39.8% on MSA vs. 66.4% on English for the same task design), and the organizers' own reference parser is fragile — a bare regex that silently falls back to index 0 on any parse failure.",
     architecture: [
       "ASR stage: Whisper (medium, local CPU) transcribes the spoken question and options.",
-      "Parse stage: a text-only local VLM call (Ollama) turns the raw transcript into a structured `{question, option_0, option_1, option_2}` object via JSON-schema-constrained decoding — never regex.",
+      "Parse stage: a text-only local VLM call (Ollama) turns the raw transcript into a structured `{question, option_0, option_1, option_2}` object via JSON-schema-constrained decoding.",
       "Conditional repair stage: a 3-step escalation ladder (stricter reparse → re-transcribe with a larger Whisper model on GPU → give up unrepaired) triggers only when a parse is flagged as structurally valid but semantically degenerate.",
       "Select stage: a joint-MCQ vision-language model call shows the image and all three options together in a single prompt, returning an `answer_index` constrained by JSON schema to {0,1,2}.",
       "Every stage's output is cached independently to disk, so a crash or config tweak only recomputes what actually changed.",
@@ -271,7 +286,7 @@ export const projects: Project[] = [
         challenge:
           "Deciding whether chain-of-thought prompting and few-shot exemplar retrieval were worth shipping by default.",
         solution:
-          "Implemented and ablated both, then made the call from measured results rather than intuition — both are complete and available, but off by default.",
+          "Implemented and ablated both, then selected the default configuration using evaluation results — both are complete and available, but off by default.",
       },
     ],
     results: [
@@ -315,6 +330,9 @@ export const projects: Project[] = [
     featured: true,
     summary:
       "An end-to-end ML pipeline that classifies barbell exercises and counts repetitions from wrist-worn accelerometer and gyroscope sensor data.",
+    outcome: "5 classifiers · 5 feature sets",
+    outcomeContext: "Random Forest reported ~99% held-out test accuracy.",
+    evaluationNote: "The exact participant split and overlapping-window leakage checks are not documented here. The reported accuracy does not establish performance on unseen participants.",
     problem:
       "Wearable sensor data is noisy, high-dimensional, and highly correlated across axes, which makes accurate exercise recognition and repetition counting non-trivial from raw signal alone.",
     architecture: [
@@ -383,7 +401,9 @@ export const projects: Project[] = [
     status: "Completed",
     featured: true,
     summary:
-      "A scaled research vehicle spanning five repositories and roughly 800 KB of hand-written C: an eight-sensor ultrasonic ring, sensor-fused odometry, geometric parking trajectory planning, closed-loop path tracking, autonomous emergency braking, and a Qt cockpit that maps the car's surroundings live over its own Wi-Fi access point.",
+      "A scaled research vehicle with ultrasonic perception, sensor fusion, parking trajectory planning, emergency braking, and a Qt telemetry cockpit. I led software architecture and the computer-vision workstream across the team.",
+    outcome: "A+ · ranked 5th of ~60",
+    outcomeContext: "Graduation project; led software architecture and computer vision.",
     problem:
       "Driver-assistance features are usually demonstrated in simulation, where perception is clean and compute is free. We built the same capability stack on real hardware — noisy ultrasonic echoes, a drifting IMU, a microcontroller with no operating system — writing every driver from GPIO up to the parking planner by hand.",
     architecture: [

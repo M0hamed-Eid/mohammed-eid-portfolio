@@ -1,44 +1,78 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import { z } from "zod";
+import { contactSchema } from "@/lib/contact-schema";
 import { siteConfig } from "@/lib/data/site-config";
-
-const contactSchema = z.object({
-  name: z.string().min(2).max(200),
-  email: z.email(),
-  message: z.string().min(10).max(5000),
-  // Honeypot. Accepts any string so a bot's filled value passes validation and
-  // is caught by the check below — `.max(0)` here would reject it as a 400 and
-  // tell the bot exactly which field tripped it.
-  company: z.string().max(200).optional(),
-});
 
 // Basic in-memory rate limit per server instance: 5 submissions / 10 minutes / IP.
 // Resets on redeploy/cold start — good enough to blunt casual spam without a DB.
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const RATE_LIMIT_MAX = 5;
-const hits = new Map<string, number[]>();
+const MAX_TRACKED_IPS = 2000;
+const MAX_BODY_BYTES = 32_768;
+const hits = new Map<string, { count: number; expiresAt: number }>();
 
 function isRateLimited(ip: string) {
   const now = Date.now();
-  const timestamps = (hits.get(ip) ?? []).filter(
-    (t) => now - t < RATE_LIMIT_WINDOW_MS
-  );
-  timestamps.push(now);
-  hits.set(ip, timestamps);
-  return timestamps.length > RATE_LIMIT_MAX;
+  for (const [key, entry] of hits) {
+    if (entry.expiresAt <= now) hits.delete(key);
+  }
+  const entry = hits.get(ip);
+  if (entry) {
+    entry.count = Math.min(entry.count + 1, RATE_LIMIT_MAX + 1);
+    return entry.count > RATE_LIMIT_MAX;
+  }
+  // Fail closed when full rather than evicting active limits. No raw IP logs.
+  if (hits.size >= MAX_TRACKED_IPS) return true;
+  hits.set(ip, { count: 1, expiresAt: now + RATE_LIMIT_WINDOW_MS });
+  return false;
+}
+
+async function readBody(request: Request): Promise<string | null> {
+  if (!request.body) return "";
+  const reader = request.body.getReader();
+  const decoder = new TextDecoder();
+  let total = 0;
+  let text = "";
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) return text + decoder.decode();
+      total += value.byteLength;
+      if (total > MAX_BODY_BYTES) {
+        await reader.cancel();
+        return null;
+      }
+      text += decoder.decode(value, { stream: true });
+    }
+  } finally {
+    reader.releaseLock();
+  }
 }
 
 export async function POST(request: Request) {
-  const ip = request.headers.get("x-forwarded-for") ?? "unknown";
+  // The hosting proxy must overwrite forwarding headers. This is a per-instance
+  // guard, not a distributed limit; production-wide abuse control belongs at edge.
+  const ip = (request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown").slice(0, 128);
   if (isRateLimited(ip)) {
     return NextResponse.json(
       { error: "Too many requests. Please try again later." },
-      { status: 429 }
+      { status: 429, headers: { "Retry-After": "600" } }
     );
   }
-
-  const body = await request.json().catch(() => null);
+  if (request.headers.get("content-type")?.split(";")[0]?.trim().toLowerCase() !== "application/json") {
+    return NextResponse.json({ error: "Send a JSON submission." }, { status: 415 });
+  }
+  if (Number(request.headers.get("content-length")) > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "Submission is too large." }, { status: 413 });
+  }
+  let body: unknown;
+  try {
+    const raw = await readBody(request);
+    if (raw === null) return NextResponse.json({ error: "Submission is too large." }, { status: 413 });
+    body = JSON.parse(raw);
+  } catch {
+    return NextResponse.json({ error: "Invalid submission." }, { status: 400 });
+  }
   const parsed = contactSchema.safeParse(body);
 
   if (!parsed.success) {
@@ -50,7 +84,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = process.env.RESEND_API_KEY?.trim();
   if (!apiKey) {
     console.error("RESEND_API_KEY is not configured.");
     return NextResponse.json(
@@ -62,8 +96,8 @@ export async function POST(request: Request) {
   // Resend's shared sandbox sender (onboarding@resend.dev) will only deliver to
   // the address that owns the Resend account. Both are overridable by env so the
   // deployment can be pointed at a verified domain without a code change.
-  const from = process.env.CONTACT_FROM_EMAIL ?? "Portfolio Contact <onboarding@resend.dev>";
-  const to = process.env.CONTACT_TO_EMAIL ?? siteConfig.email;
+  const from = process.env.CONTACT_FROM_EMAIL?.trim() || "Portfolio Contact <onboarding@resend.dev>";
+  const to = process.env.CONTACT_TO_EMAIL?.trim() || siteConfig.email;
 
   const resend = new Resend(apiKey);
   const { name, email, message } = parsed.data;
@@ -88,7 +122,6 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error: "Couldn't send that message — please email me directly instead.",
-          reason: error.message,
         },
         { status: 502 }
       );

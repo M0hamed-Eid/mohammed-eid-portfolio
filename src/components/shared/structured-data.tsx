@@ -1,4 +1,5 @@
 import { siteConfig } from "@/lib/data/site-config";
+import { projects, getProjectHref } from "@/lib/data/projects";
 import { education } from "@/lib/data/education";
 
 export function StructuredData() {
@@ -9,7 +10,7 @@ export function StructuredData() {
     url: siteConfig.url,
     image: `${siteConfig.url}/images/profile/photo.jpg`,
     jobTitle: siteConfig.roles,
-    description: siteConfig.summary,
+    description: siteConfig.description,
     email: `mailto:${siteConfig.email}`,
     address: {
       "@type": "PostalAddress",
@@ -49,20 +50,28 @@ export function StructuredData() {
     "@id": `${siteConfig.url}/#website`,
     url: siteConfig.url,
     name: `${siteConfig.name} — Portfolio`,
-    description: siteConfig.summary,
+    description: siteConfig.description,
     inLanguage: "en",
     publisher: { "@id": `${siteConfig.url}/#person` },
   };
 
   const data = {
     "@context": "https://schema.org",
-    "@graph": [person, website],
+    "@graph": [person, website, {
+      "@type": "ItemList",
+      name: "Selected engineering projects",
+      itemListElement: projects.filter((project) => project.featured).map((project, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        item: { "@type": "CreativeWork", name: project.title, url: `${siteConfig.url}${getProjectHref(project)}`, description: project.summary },
+      })),
+    }],
   };
 
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }}
     />
   );
 }

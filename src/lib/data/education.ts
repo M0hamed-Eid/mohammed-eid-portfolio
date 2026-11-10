@@ -184,7 +184,7 @@ export const achievements: Achievement[] = [
   {
     title: "Published a bilingual dataset on Hugging Face",
     detail:
-      "882 documents and roughly 890K words of Arabic/English Palestinian cultural and historical text — quality-scored, deduplicated, and openly released.",
+      "882 documents and roughly 890K words of Arabic/English Palestinian cultural and historical text — quality-scored, deduplicated, and published on a public dataset card with gated file access.",
     icon: "Database",
     href: "https://huggingface.co/datasets/palestinian-kg/palestinian-cultural-knowledge",
   },
