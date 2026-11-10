@@ -17,11 +17,11 @@ export const experience: ExperienceEntry[] = [
     stack: ["Python", "FastAPI", "LangGraph", "PostgreSQL", "Qdrant", "Mattermost"],
   },
   {
-    role: "Freelance Backend Developer",
+    role: "Freelance Full Stack Developer",
     company: "StockGo (Qatar)",
     period: "Nov 2024 — Apr 2025",
     detail:
-      "Built and deployed a Django REST API and business-analytics dashboard for a live client product used for inventory tracking.",
+      "Built and deployed the complete StockGo website, including frontend and backend, for a live marketplace for surplus construction materials and equipment. Developed Django REST APIs and a PostgreSQL-backed analytics dashboard.",
     href: "https://www.thestockgo.com/en/",
     stack: ["Django", "REST APIs", "PostgreSQL", "Analytics Dashboard"],
   },
