@@ -1,298 +1,129 @@
-%==============================================================================
-%  Mohammed Eid Abdelmeguid — CV
-%
-%  SOURCE OF TRUTH. Edit this file (in Overleaf or in this repo), never the PDF.
-%  Pushing a change to this file rebuilds public/Mohammed-Eid-Abdelmeguid-Resume.pdf
-%  and the /resume preview images via .github/workflows/build-cv.yml.
-%
-%  Compiles with pdfLaTeX.
-%==============================================================================
-
-\documentclass[11pt, letterpaper]{article}
-
-% Packages:
-\usepackage[
-    ignoreheadfoot,
-    top=1.5 cm,
-    bottom=1.5 cm,
-    left=1.5 cm,
-    right=1.5 cm,
-    footskip=0.5 cm,
-]{geometry}
-\usepackage[explicit]{titlesec}
-\usepackage{tabularx}
-\usepackage{array}
-\usepackage[dvipsnames]{xcolor}
-\definecolor{primaryColor}{RGB}{0, 79, 144}
-\usepackage{enumitem}
-\usepackage{amsmath}
-\usepackage{tikz}              % draws the external-link icon as a vector
-\usepackage{etoolbox}          % required by \AtBeginEnvironment below
-\usepackage{microtype}         % character protrusion + font expansion
-\usepackage[
-    pdftitle={Mohammed Eid Abdelmeguid — AI/ML Engineer CV},
-    pdfauthor={Mohammed Eid Abdelmeguid},
-    pdfsubject={AI Engineer / Machine Learning Engineer / Data Scientist},
-    pdfkeywords={AI Engineer, Machine Learning Engineer, Data Scientist, LLM, RAG,
-                 NLP, Deep Learning, Python, PyTorch, TensorFlow, PostgreSQL, pgvector},
-    colorlinks=true,
-    urlcolor=primaryColor
-]{hyperref}
-\usepackage{calc}
-\usepackage{bookmark}
-\usepackage{changepage}
-\usepackage{paracol}
-\usepackage{ifthen}
-\usepackage{needspace}
+% Source of truth for the portfolio resume. Compile with pdfLaTeX or Tectonic.
+% Single text column; no tables, text boxes, icons, or page headers/footers.
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1.55cm]{geometry}
 \usepackage{iftex}
-
-% ATS compatibility
 \ifPDFTeX
-    \input{glyphtounicode}
-    \pdfgentounicode=1
-    \usepackage[T1]{fontenc}
-    \usepackage[utf8]{inputenc}
-    \usepackage{lmodern}
+  \input{glyphtounicode}
+  \pdfgentounicode=1
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
 \fi
-
-\usepackage[default, type1]{sourcesanspro}
-
-% Let TeX loosen a tight line rather than crushing the word spaces on it.
-% Without this, long unbreakable compounds squeeze inter-word space so far that
-% PDF text extraction — and therefore ATS parsers — read the words as a single
-% run-together token.
-\setlength{\emergencystretch}{2em}
-\hyphenpenalty=100
-\tolerance=2000
-
-% Style adjustments
-\AtBeginEnvironment{adjustwidth}{\partopsep0pt}
+\usepackage[default,type1]{sourcesanspro}
+\usepackage{microtype}
+\ifPDFTeX\DisableLigatures{encoding=*,family=*}\fi
+\usepackage[dvipsnames]{xcolor}
+\definecolor{primaryColor}{RGB}{0,65,115}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage[
+  pdftitle={Mohammed Eid Abdelmeguid - AI and Machine Learning Engineer},
+  pdfauthor={Mohammed Eid Abdelmeguid},
+  pdfsubject={AI Engineer, Machine Learning Engineer, Generative AI Engineer, Data Scientist},
+  colorlinks=true,urlcolor=primaryColor
+]{hyperref}
+\urlstyle{same}
 \pagestyle{empty}
-\setcounter{secnumdepth}{0}
 \setlength{\parindent}{0pt}
-\setlength{\topskip}{0pt}
-\setlength{\columnsep}{0.1cm}
-
-% Section title formatting
-\titleformat{\section}
-    {\needspace{2\baselineskip}\large\color{primaryColor}} % Format
-    {} % Label (empty for unnumbered sections)
-    {0pt} % Separator (no space needed)
-    {\textbf{#1}\hspace{0.1cm}\titlerule[0.5pt]\hspace{-0.1cm}} % Title
-    [] % Optional argument (not needed here)
-\titlespacing{\section}{-1pt}{0.34 cm}{0.16 cm}
-
-% Custom environments
-\newenvironment{highlights}{
-    \begin{itemize}[
-        topsep=0.08 cm,
-        parsep=0.07 cm,
-        partopsep=0pt,
-        itemsep=0pt,
-        leftmargin=0.4 cm + 10pt
-    ]
-}{\end{itemize}}
-
-\newenvironment{onecolentry}{
-    \begin{adjustwidth}{0.2 cm + 0.00001 cm}{0.2 cm + 0.00001 cm}
-}{\end{adjustwidth}}
-
-\newenvironment{twocolentry}[2][]{
-    \onecolentry
-    \def\secondColumn{#2}
-    \setcolumnwidth{\fill, 4.2 cm}
-    \begin{paracol}{2}
-}{
-    \switchcolumn \raggedleft \secondColumn
-    \end{paracol}
-    \endonecolentry
-}
-
-\newenvironment{header}{
-    \setlength{\topsep}{0pt}\par\kern\topsep\centering\color{primaryColor}\linespread{1.3}
-}{\par\kern\topsep}
-
-%------------------------------------------------------------------------------
-% External-link indicator.
-%
-% Drawn as a TikZ vector, NOT as a font glyph. The obvious approach —
-% \faExternalLink* from fontawesome5 — renders correctly but its glyph has no
-% usable ToUnicode mapping, so it extracts from the PDF text layer as the
-% character "2". An ATS then reads "Palestinian Cultural Knowledge Platform 2"
-% and "IBM AI Engineering Professional Certificate 2". A vector path contributes
-% nothing to the text layer, so the icon is visible to humans and invisible to
-% parsers. Sized in ex units so it scales with whatever text it follows.
-%------------------------------------------------------------------------------
-\newcommand{\linkicon}{%
-    \raisebox{0.02ex}{% sit optically on the baseline
-        \begin{tikzpicture}[x=1ex, y=1ex, line width=0.14ex,
-                            line cap=round, line join=round]
-            % open-cornered box
-            \draw[primaryColor] (0,0) -- (0,1.35) -- (1.35,1.35) -- (1.35,0.72);
-            \draw[primaryColor] (0,0) -- (1.35,0) -- (1.35,0.2);
-            % arrow escaping the top-right corner
-            \draw[primaryColor] (0.72,0.62) -- (1.62,1.52);
-            \draw[primaryColor] (1.0,1.52) -- (1.62,1.52) -- (1.62,0.9);
-        \end{tikzpicture}%
-    }%
-}
-
-% Every web link gets the icon; \hrefWithoutArrow stays available for mailto:
-% and tel:, where an "external link" marker would be noise.
-\let\hrefWithoutArrow\href
-\renewcommand{\href}[2]{\hrefWithoutArrow{#1}{#2\,\linkicon}}
+\setlength{\parskip}{0pt}
+\setlength{\emergencystretch}{2em}
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\raggedright
+\titleformat{\section}{\needspace{3\baselineskip}\large\bfseries\color{primaryColor}}{}{0pt}{}[\vspace{1pt}\titlerule]
+\titlespacing*{\section}{0pt}{9pt}{5pt}
+\setlist[itemize]{leftmargin=1.25em,topsep=3pt,itemsep=2pt,parsep=0pt,partopsep=0pt}
+\newcommand{\entry}[2]{\needspace{4\baselineskip}\textbf{#1}\par #2\par}
+\newcommand{\gap}{\vspace{5pt}}
 
 \begin{document}
+{\fontsize{24}{27}\selectfont\bfseries\color{primaryColor} Mohammed Eid Abdelmeguid}\par
+\vspace{4pt}
+{\large AI Engineer | Machine Learning Engineer}\par
+\vspace{4pt}
+Alexandria, Egypt | \href{mailto:MohammedEidAbdelmeguid@gmail.com}{MohammedEidAbdelmeguid@gmail.com} | +20 12 10649832\par
+\href{https://github.com/M0hamed-Eid}{GitHub: github.com/M0hamed-Eid} | \href{https://mohammed-eid-portfolio.vercel.app}{Portfolio: mohammed-eid-portfolio.vercel.app}\par
+\href{https://linkedin.com/in/mohammed-eid-abdelmeguid}{LinkedIn: linkedin.com/in/mohammed-eid-abdelmeguid}\par
 
-\begin{header}
-    \fontsize{26 pt}{26 pt}
-    \textbf{Mohammed Eid Abdelmeguid}
-
-    \vspace{0.22 cm}
-
-    \normalsize
-    Alexandria, Egypt
-    \quad$|$\quad
-    \hrefWithoutArrow{mailto:MohammedEidAbdelmeguid@gmail.com}{MohammedEidAbdelmeguid@gmail.com}
-    \quad$|$\quad
-    \hrefWithoutArrow{tel:+20-12-10649832}{+20 12 10649832}
-    \newline
-    \href{https://mohammed-eid-portfolio.vercel.app}{Portfolio}
-    \quad$|$\quad
-    \href{https://github.com/M0hamed-Eid}{GitHub}
-    \quad$|$\quad
-    \href{https://linkedin.com/in/mohammed-eid-abdelmeguid}{LinkedIn}
-    \quad$|$\quad
-    \href{https://huggingface.co/mohammedeid}{Hugging Face}
-\end{header}
-
-\vspace{0.2 cm}
-
-% Summary and experience lead with current AI engineering work.
-\section{Summary}
-\begin{onecolentry}
-AI/ML engineer with Python backend experience and internship contributions to Sprints' AI digital twin. Builds document-retrieval systems, LLM applications and Arabic NLP pipelines. Co-author of an ArabicNLP 2026 shared-task paper; completed the Digilians AI \& Data Science diploma in September 2026.
-\end{onecolentry}
-
-\section{Experience}
-\begin{twocolentry}{4 Oct -- 15 Nov 2026}
-\textbf{AI Intern} $|$ Sprints
-\end{twocolentry}
-\begin{onecolentry}
-\begin{highlights}
-\item Worked on SprintFlow's Digital Twin proxy mode and multi-format data ingestion for RAG using FastAPI, LangGraph, PostgreSQL and Qdrant.
-\item Built file uploads, parsing, chunking, embedding/indexing and cited retrieval; contributed owner-controlled proxy replies and the knowledge used to ground them.
-\end{highlights}
-\end{onecolentry}
-
-\vspace{0.08cm}
-\begin{twocolentry}{Nov 2024 -- Apr 2025}
-\textbf{Freelance Backend Developer} $|$ StockGo (Qatar)
-\end{twocolentry}
-\begin{onecolentry}\begin{highlights}
-\item Built and deployed a Django REST API and PostgreSQL-backed analytics dashboard for a live inventory-tracking product.
-\end{highlights}\end{onecolentry}
-
-\vspace{0.08cm}
-\begin{twocolentry}{Mar -- Apr 2025}
-\textbf{Full Stack Developer Intern} $|$ NfrtiX
-\end{twocolentry}
-\begin{onecolentry}\begin{highlights}
-\item Built an internal Django/JavaScript application to support operational workflows.
-\end{highlights}\end{onecolentry}
-
-\vspace{0.08cm}
-\begin{twocolentry}{Oct 2024 -- Feb 2025}
-\textbf{Backend Developer Intern} $|$ Venture Appital
-\end{twocolentry}
-\begin{onecolentry}\begin{highlights}
-\item Developed modular Flask REST microservices and unit tests.
-\end{highlights}\end{onecolentry}
-
-\section{Selected Projects}
-\begin{onecolentry}
-\textbf{\href{https://mohammed-eid-portfolio.vercel.app/projects/sprints-digital-twin}{SprintFlow -- Digital Twin}} $|$ Sprints Internship Project
-\begin{highlights}
-\item AI workspace with proxy replies and a file-to-answer RAG pipeline combining semantic search with PostgreSQL ownership checks. My contributions focused on proxy mode and data ingestion; source repository is private.
-\end{highlights}
-\end{onecolentry}
-
-\vspace{0.1cm}
-\begin{twocolentry}{May 2026 -- Present}
-\textbf{\href{https://mohammed-eid-portfolio.vercel.app/projects/ai-compass}{AI Compass}} $|$ Multi-Agent RAG \& Recommendations
-\end{twocolentry}
-\begin{onecolentry}\begin{highlights}
-\item Led a team of five on an AI news platform with seven ingestion sources, five enrichment agents, semantic search and a streaming RAG assistant.
-\item Built pgvector candidate retrieval, weighted ranking and MMR diversification with an offline NDCG@10/MAP evaluation harness; integrated Django, Celery/Redis and Groq-served LLMs.
-\item Deployed on Vercel and AWS EC2 with PostgreSQL; backend subsequently paused to control hosting costs.
-\end{highlights}\end{onecolentry}
-
-\vspace{0.1cm}
-\begin{twocolentry}{Jun -- Aug 2026}
-\textbf{\href{https://mohammed-eid-portfolio.vercel.app/projects/palestinian-cultural-knowledge-platform}{Palestinian Cultural Knowledge Platform}} $|$ Arabic NLP \& RAG
-\end{twocolentry}
-\begin{onecolentry}\begin{highlights}
-\item Owned ingestion, Arabic NLP, retrieval and knowledge-graph work on a two-person project. Published a bilingual corpus of 882 documents (about 890K words) on Hugging Face with gated file access.
-\item Built CAMeL Tools NER (F1 0.47), a retriever (Recall@5 0.93 across 1,282 passages), and a graph of 13,063 canonicalized entities; evaluation figures are project-specific.
-\end{highlights}\end{onecolentry}
-
-\newpage
-\section{Selected Projects (continued)}
-\begin{twocolentry}{Jul -- Oct 2026}
-\textbf{\href{https://mohammed-eid-portfolio.vercel.app/projects/aynvqa-msa}{AynVQA-MSA}} $|$ Arabic Spoken Visual Question Answering
-\end{twocolentry}
-\begin{onecolentry}\begin{highlights}
-\item Implemented a modular Whisper ASR, schema-constrained parsing, conditional repair and joint vision-language answer-selection pipeline for the ImageEval 2026 MSA shared task.
-\item Published frozen-system results: \textbf{65.6\% accuracy on 1,000 blind-test examples} (57.4\% balanced accuracy; 50.4\% macro F1), versus 79.0\% on 500 development examples.
-\item Co-authored the shared-task paper analyzing the synthetic-to-human recording shift and a caching reproducibility issue; most development improvement came from the answer-selection model change.
-\end{highlights}\end{onecolentry}
-
-\vspace{0.1cm}
-\begin{twocolentry}{Mar -- Apr 2026}
-\textbf{\href{https://mohammed-eid-portfolio.vercel.app/projects/fitness-activity-tracker}{Fitness Activity Tracker}} $|$ Sensor-Based Machine Learning
-\end{twocolentry}
-\begin{onecolentry}\begin{highlights}
-\item Preprocessed wearable sensor data, engineered PCA/FFT features, compared five classifiers across five feature sets, and implemented independent repetition counting on a three-person team.
-\end{highlights}\end{onecolentry}
-
-\section{Publication}
-\begin{onecolentry}
-\textbf{\href{https://aclanthology.org/2026.arabicnlp-sharedtasks.96/}{Digilians at ImageEval 2026 Shared Tasks: Modular Speech Parsing and Joint Multimodal Reasoning for Arabic Spoken VQA}}
-
-Ahmed Eid Hassan, Nour Eldeen Hossam, Ahmed Hossam Rashad, Abdelrhman Mahmoud Fawzy, \textbf{Mohammed Eid Abdelmeguid}, Mohamed Hamdy Mohamed.
-\textit{ArabicNLP 2026: Shared Tasks}, pp. 766--770, October 2026. DOI: 10.18653/2026.arabicnlp-sharedtasks.96.
-\end{onecolentry}
+\section{Professional Summary}
+AI/ML engineer with experience in Python backend development, retrieval-augmented generation (RAG), large language model (LLM) applications, and AI agent workflows. Contributed proxy-mode and document-ingestion features during an AI internship at Sprints. Built multi-agent applications and Arabic NLP systems; co-authored an ArabicNLP 2026 paper reporting blind-test results for spoken visual question answering.
 
 \section{Technical Skills}
-\begin{onecolentry}
-\textbf{AI Agents \& RAG:} LangGraph, embeddings, pgvector, Qdrant, Ollama, Groq API, structured outputs, document retrieval
+\textbf{Programming and Data:} Python, SQL, Pandas, NumPy, data cleaning, preprocessing, PostgreSQL\par
+\textbf{Generative AI and Retrieval:} RAG, LangGraph, AI agents, document ingestion, chunking, embeddings, semantic search, pgvector, Qdrant, structured LLM outputs\par
+\textbf{Machine Learning and Evaluation:} Scikit-learn, XGBoost, TensorFlow/Keras, feature engineering, PCA, grid search, classification, retrieval evaluation (Recall@K, NDCG@K, MAP); familiarity with PyTorch\par
+\textbf{NLP and Multimodal AI:} Arabic NLP, CAMeL Tools, named entity recognition, BERTopic, knowledge graphs (NetworkX), Whisper speech recognition, vision-language models\par
+\textbf{Backend Engineering:} FastAPI, Django, Flask, REST APIs, Celery, Redis, SQLAlchemy/SQLModel, unit testing\par
+\textbf{Deployment and Tools:} Docker, AWS EC2, Vercel, Git, GitHub Actions, Linux, Ollama, Groq API\par
 
-\textbf{Machine Learning:} Scikit-learn, XGBoost, feature engineering, model evaluation, grid search; TensorFlow/Keras; familiarity with PyTorch
+\section{Professional Experience}
+\entry{AI Intern | Sprints}{Oct 4, 2026 - Nov 15, 2026}
+\textit{SprintFlow Digital Twin - Proxy Mode and RAG Data Ingestion}
+\begin{itemize}
+\item Implemented document ingestion from file upload through parsing, chunking, embedding, and indexing for PDF, DOCX, plain-text, and Markdown files.
+\item Built access-aware document retrieval with source citations using FastAPI, LangGraph, PostgreSQL, and Qdrant.
+\item Developed owner-controlled proxy replies and the knowledge used to ground them, with conversation-thread continuity and scoped access to private context.
+\end{itemize}
+\gap
+\entry{Full Stack Developer Intern | NfrtiX}{Mar 2025 - Apr 2025}
+\begin{itemize}
+\item Built an internal Django and JavaScript application to support operational workflows.
+\end{itemize}
+\gap
+\entry{Freelance Backend Developer | StockGo, Qatar}{Nov 2024 - Apr 2025}
+\begin{itemize}
+\item Built and deployed a Django REST API and PostgreSQL-backed analytics dashboard for a live inventory-tracking product.
+\end{itemize}
+\gap
+\entry{Backend Developer Intern | Venture Appital}{Oct 2024 - Feb 2025}
+\begin{itemize}
+\item Developed modular Flask REST microservices and unit tests.
+\end{itemize}
 
-\textbf{NLP \& Speech:} CAMeL Tools, NER, BERTopic, NetworkX/Wikidata, Whisper, Qwen vision-language models
+\newpage
+\section{Projects}
+\entry{\href{https://mohammed-eid-portfolio.vercel.app/projects/ai-compass}{AI Compass} | Multi-Agent RAG and Recommendation Platform}{May 2026 - Present}
+\begin{itemize}
+\item Led a team of five building an AI news platform with seven ingestion sources, five enrichment agents, semantic search, and a streaming RAG assistant.
+\item Implemented pgvector candidate retrieval, weighted ranking, and MMR diversification with an offline NDCG@10/MAP evaluation harness; integrated Django, Celery/Redis, and Groq-served LLMs.
+\item Deployed the frontend on Vercel and backend on AWS EC2 with PostgreSQL.
+\end{itemize}
+\gap
+\entry{\href{https://mohammed-eid-portfolio.vercel.app/projects/aynvqa-msa}{AynVQA-MSA} | Arabic Spoken Visual Question Answering}{Jul 2026 - Oct 2026}
+\begin{itemize}
+\item Implemented a modular Whisper speech-recognition, schema-constrained parsing, conditional repair, and joint vision-language answer-selection pipeline.
+\item Co-authored published results: \textbf{65.6\% accuracy on 1,000 blind-test examples}, versus 79.0\% on 500 development examples; analyzed the recording-condition shift and a caching reproducibility issue.
+\end{itemize}
+\gap
+\entry{\href{https://mohammed-eid-portfolio.vercel.app/projects/palestinian-cultural-knowledge-platform}{Palestinian Cultural Knowledge Platform} | Arabic NLP and Retrieval}{Jun 2026 - Aug 2026}
+\begin{itemize}
+\item Owned ingestion, Arabic NLP, retrieval, and knowledge-graph work on a two-person project; built quality scoring, normalization, and persistent MinHash/LSH deduplication.
+\item Published 882 Arabic/English documents (about 890K words) on Hugging Face with gated file access; built a graph of 13,063 canonicalized entities and a retriever reporting Recall@5 of 0.93 over 1,282 passages.
+\end{itemize}
+\gap
+\entry{\href{https://mohammed-eid-portfolio.vercel.app/projects/fitness-activity-tracker}{Fitness Activity Tracker} | Sensor-Based Machine Learning}{Mar 2026 - Apr 2026}
+\begin{itemize}
+\item Preprocessed wearable sensor data, engineered PCA/FFT features, compared five classifiers across five feature sets, and implemented independent repetition counting on a three-person team.
+\end{itemize}
 
-\textbf{Backend \& Data:} Python, SQL, FastAPI, Django, Flask, PostgreSQL, Celery, Redis, SQLAlchemy/SQLModel, Pandas, NumPy
-
-\textbf{Tools:} Docker, Git, GitHub Actions, Linux, Jupyter, Streamlit
-\end{onecolentry}
+\section{Publications}
+\textbf{\href{https://aclanthology.org/2026.arabicnlp-sharedtasks.96/}{Digilians at ImageEval 2026 Shared Tasks: Modular Speech Parsing and Joint Multimodal Reasoning for Arabic Spoken VQA}}\par
+Ahmed Eid Hassan, Nour Eldeen Hossam, Ahmed Hossam Rashad, Abdelrhman Mahmoud Fawzy, \textbf{Mohammed Eid Abdelmeguid}, and Mohamed Hamdy Mohamed. \textit{ArabicNLP 2026: Shared Tasks}, pp. 766--770, Oct 2026. DOI: 10.18653/2026.arabicnlp-sharedtasks.96.
 
 \section{Education}
-\begin{twocolentry}{Sep 2019 -- Jun 2024}
-\textbf{Alexandria University -- Faculty of Engineering}\\
-BS in Communication and Electronics Engineering
-\end{twocolentry}
-\begin{onecolentry}\begin{highlights}
-\item \textbf{\href{https://mohammed-eid-portfolio.vercel.app/adas}{ADAS graduation project}}: A+, ranked 5th of about 60 in the \textbf{Valeo competition}. Led software architecture and computer vision; mentored by Valeo and sponsored by ITIDA's Egypt Makes Electronics program.
-\end{highlights}\end{onecolentry}
+\textbf{AI and Data Science Diploma | Digilians}\par
+MCIT / Egyptian Military Academy scholarship | Dec 2025 - Sep 2026\par
+\gap
+\textbf{BS in Communication and Electronics Engineering | Alexandria University}\par
+Faculty of Engineering | Sep 2019 - Jun 2024 | GPA: 3.13/4.0\par
+ADAS graduation project: A+, ranked 5th of about 60 in the Valeo competition. Led software architecture and computer vision; mentored by Valeo and sponsored by ITIDA's Egypt Makes Electronics program.
 
-\section{Selected Certifications \& Training}
-\begin{onecolentry}
-\textbf{AI \& Data Science Diploma} -- Digilians, MCIT scholarship \hfill Sep 2026\\
-\textbf{\href{https://aws.amazon.com/verification}{AWS Machine Learning Engineer -- Associate}} \hfill Sep 2026\\
-\textbf{\href{https://e.huawei.com/en/talent/\#/cert/certificate-verification}{Huawei HCIA-AI}} \hfill Aug 2026\\
-\textbf{\href{https://www.coursera.org/account/accomplishments/specialization/L3AI1XFNW950}{IBM AI Engineering Professional Certificate}} \hfill Jun 2026\\
-\textbf{\href{https://www.coursera.org/account/accomplishments/specialization/BZQOVQR0HKXI}{Machine Learning Specialization -- Stanford / DeepLearning.AI}} \hfill May 2026\\
-\textbf{Microsoft Data Engineer -- DEPI (159 hours)} \hfill Oct 2024
-\end{onecolentry}
-
+\section{Certifications}
+\href{https://aws.amazon.com/verification}{\textbf{AWS Certified Machine Learning Engineer - Associate}} | Amazon Web Services | Sep 2026\par
+\href{https://e.huawei.com/en/talent/\#/cert/certificate-verification}{\textbf{Huawei Certified ICT Associate - AI (HCIA-AI)}} | Huawei | Aug 2026\par
+\href{https://www.coursera.org/account/accomplishments/specialization/L3AI1XFNW950}{\textbf{IBM AI Engineering Professional Certificate}} | IBM / Coursera | Jun 2026\par
+\href{https://www.coursera.org/account/accomplishments/specialization/BZQOVQR0HKXI}{\textbf{Machine Learning Specialization}} | Stanford / DeepLearning.AI | May 2026\par
+\href{https://coursera.org/verify/9B7HT7WVGLJ0}{\textbf{Generative AI for Data Science with Copilot}} | Microsoft / Coursera | Apr 2026\par
+\textbf{Microsoft Data Engineer (159 hours)} | DEPI | Oct 2024\par
 \end{document}

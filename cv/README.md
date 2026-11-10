@@ -65,3 +65,21 @@ You do not need LaTeX installed — CI handles it. If you want a local preview:
 ```bash
 docker run --rm -v "$PWD/cv:/cv" -w /cv texlive/texlive:latest pdflatex -interaction=nonstopmode main.tex
 ```
+
+## Application-friendly structure
+
+See [ATS notes](ATS-NOTES.md) for the current section order and checks.
+Digital Twin work belongs under the Sprints internship only. Keep independent
+projects in Projects and preserve the two-page limit.
+
+For a local Tectonic build, normalise the font Unicode mappings before copying
+the PDF to public/ (requires pypdf):
+
+```sh
+tectonic cv/main.tex --outdir tmp/pdfs
+python3 cv/normalize_pdf_text.py tmp/pdfs/main.pdf tmp/pdfs/normalized.pdf
+```
+
+This changes text mappings only. CI uses pdfLaTeX, with Unicode mapping enabled
+and font ligatures disabled directly in the source. Both routes should be
+visually checked and have extracted text reviewed before delivery.

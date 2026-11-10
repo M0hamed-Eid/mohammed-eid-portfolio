@@ -1,5 +1,7 @@
 {
-  "builtAt": "2026-11-10T20:28:35Z",
-  "commit": "a8a89bf7368897ac2d94532f4994b762b6ab7304",
-  "pages": 2
+  "builtAt": "2026-11-10T21:34:19Z",
+  "commit": "f7a61cab5375b830c522db67ce67732476ea0af6",
+  "pages": 2,
+  "sourceSha256": "8a401235084167b421bb691544d68ed0fd2606f111bec39e331139756c97daa1",
+  "sourceDirty": true
 }

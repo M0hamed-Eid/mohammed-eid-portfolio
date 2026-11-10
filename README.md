@@ -91,3 +91,8 @@ For delivered contact mail appearing in Gmail Spam, see
 [contact email troubleshooting](docs/contact-email.md). The current shared
 test sender can be allowed with a narrowly scoped Gmail filter; a verified
 owned domain is the long-term sending setup. Inbox placement is not guaranteed.
+
+When Digilians issues the certificate files, follow
+[the certificate upload guide](docs/adding-certificates.md). The diploma entry
+already exists; attach its image and optional real verification URL to that
+entry rather than duplicating it.
