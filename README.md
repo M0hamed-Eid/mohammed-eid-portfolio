@@ -86,3 +86,8 @@ The original animated UI is retained. Sprints is listed as an AI internship
 (4 October–15 November 2026) focused on proxy mode and multi-format RAG ingestion; its
 private repository URL is intentionally omitted. The CV is limited to two pages
 and the CV workflow enforces that limit before updating the public PDF/previews.
+
+For delivered contact mail appearing in Gmail Spam, see
+[contact email troubleshooting](docs/contact-email.md). The current shared
+test sender can be allowed with a narrowly scoped Gmail filter; a verified
+owned domain is the long-term sending setup. Inbox placement is not guaranteed.
